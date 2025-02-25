@@ -3,44 +3,50 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Stand de Automóveis PrisCar - Encontre o carro dos seus sonhos com qualidade e preços acessíveis.">
+  <meta name="description" content="Stand de Automóveis PrisCar - Encontre o carro dos seus sonhos com qualidade, segurança e preços acessíveis.">
   <meta name="keywords" content="stand de carros, carros novos, carros usados, venda de carros, PrisCar">
   <meta name="author" content="Rui Pedro">
   <title>PrisCar - Stand de Automóveis</title>
+  <!-- Manifest para PWA (exemplo) -->
+  <link rel="manifest" href="manifest.json">
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
-    /* ==================== RESET & BASE ==================== */
+    /* ================= RESET & BASE ================= */
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: 'Roboto', sans-serif;
       background-color: #f4f4f4;
-      margin: 0;
       color: #333;
       scroll-behavior: smooth;
     }
     a { text-decoration: none; }
     
-    /* ==================== CABEÇALHO & NAVEGAÇÃO ==================== */
+    /* ================= CABEÇALHO & NAVEGAÇÃO ================= */
     header {
-      background-color: #000;
+      background: linear-gradient(45deg, #000, #444);
       color: #fff;
       text-align: center;
       padding: 20px 0;
       font-size: 36px;
       font-weight: 600;
       text-transform: uppercase;
+      letter-spacing: 2px;
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
     }
     nav {
       background-color: #333;
       padding: 10px 0;
       text-align: center;
       position: sticky;
-      top: 0;
+      top: 80px;
       width: 100%;
-      z-index: 999;
+      z-index: 1000;
       transition: background-color 0.3s ease;
     }
     nav a {
@@ -52,19 +58,34 @@
       transition: color 0.3s;
     }
     nav a:hover { color: #ffcc00; }
+    /* Language Switcher */
+    .lang-switcher {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #222;
+      color: #fff;
+      padding: 8px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      z-index: 1100;
+    }
     
-    /* ==================== CONTEÚDO DAS ABAS ==================== */
-    .tab-content { display: none; padding: 20px; animation: fadeIn 0.5s; }
+    /* ================= CONTEÚDO DAS ABAS ================= */
+    .tab-content { display: none; padding: 80px 20px 20px; animation: fadeIn 0.5s; }
     .tab-content.active { display: block; }
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     
-    /* ==================== ABA INÍCIO ==================== */
+    /* ================= ABA INÍCIO ================= */
     .banner-image {
       width: 100%;
       height: 400px;
       object-fit: cover;
       background-position: center;
       display: block;
+      filter: brightness(0.8);
+      /* Efeito Parallax sutil */
+      transform: translateZ(0);
     }
     .welcome-description {
       padding: 40px 20px;
@@ -85,7 +106,7 @@
       margin: 0 auto;
     }
     
-    /* ==================== ABA CARROS ==================== */
+    /* ================= ABA CARROS ================= */
     .car-filter {
       display: flex;
       justify-content: center;
@@ -107,12 +128,13 @@
       padding: 50px;
     }
     .car {
-      background-color: #fff;
+      background: #fff;
       border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
       transition: transform 0.3s ease-in-out;
       cursor: pointer;
       overflow: hidden;
+      position: relative;
     }
     .car:hover { transform: scale(1.05); }
     .car img {
@@ -120,19 +142,52 @@
       height: 200px;
       object-fit: cover;
       border-bottom: 2px solid #ccc;
+      transition: opacity 0.3s;
     }
+    .car:hover img { opacity: 0.8; }
     .car .info { padding: 15px; }
     .car h3 { font-size: 24px; font-weight: 600; }
     .car p { font-size: 16px; color: #666; }
+    /* Efeito 3D Flip (exemplo) */
+    .flip-card { background-color: transparent; perspective: 1000px; }
+    .flip-card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.8s;
+      transform-style: preserve-3d;
+    }
+    .flip-card:hover .flip-card-inner { transform: rotateY(180deg); }
+    .flip-card-front, .flip-card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+    }
+    .flip-card-back { transform: rotateY(180deg); }
+    /* Carrossel de Imagens */
+    .carousel {
+      display: flex;
+      overflow-x: auto;
+      gap: 10px;
+      padding: 20px;
+    }
+    .carousel img {
+      width: 300px;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 8px;
+      flex-shrink: 0;
+    }
     
-    /* ==================== MODAL DO CARRO ==================== */
+    /* ================= MODAL DO CARRO ================= */
     .modal {
       display: none;
       position: fixed;
       top: 0; left: 0;
       width: 100%;
       height: 100%;
-      background-color: rgba(0, 0, 0, 0.8);
+      background: rgba(0,0,0,0.8);
       z-index: 1000;
       justify-content: center;
       align-items: center;
@@ -161,7 +216,7 @@
       cursor: pointer;
     }
     
-    /* ==================== ABA SOBRE ==================== */
+    /* ================= ABA SOBRE ================= */
     #about {
       padding: 40px;
       text-align: center;
@@ -173,7 +228,7 @@
       padding: 20px;
       background: #fff;
       border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
       max-width: 800px;
       margin: 40px auto;
     }
@@ -191,7 +246,7 @@
       border-radius: 8px;
     }
     
-    /* ==================== ABA CONTATO ==================== */
+    /* ================= ABA CONTATO ================= */
     #contact {
       padding: 40px;
       text-align: center;
@@ -213,8 +268,8 @@
     }
     .contact-form button {
       padding: 15px;
-      background-color: #ffcc00;
-      color: white;
+      background: #ffcc00;
+      color: #fff;
       font-size: 18px;
       border: none;
       border-radius: 5px;
@@ -223,9 +278,9 @@
     }
     .contact-form button:hover { background-color: #e6b800; }
     
-    /* ==================== RODAPÉ ==================== */
+    /* ================= RODAPÉ ================= */
     footer {
-      background-color: #333;
+      background: #333;
       color: #fff;
       text-align: center;
       padding: 15px;
@@ -235,12 +290,12 @@
     footer p { font-size: 14px; }
     footer a { color: #ffcc00; text-decoration: none; }
     
-    /* ==================== BOTÃO BACK TO TOP ==================== */
+    /* ================= BOTÃO BACK TO TOP ================= */
     #backToTop {
       position: fixed;
       bottom: 20px;
       left: 20px;
-      background-color: #333;
+      background: #333;
       color: #fff;
       padding: 10px;
       border-radius: 50%;
@@ -249,7 +304,7 @@
       display: none;
     }
     
-    /* ==================== COOKIE CONSENT POPUP ==================== */
+    /* ================= COOKIE CONSENT POPUP ================= */
     #cookieConsent {
       position: fixed;
       bottom: 0;
@@ -286,6 +341,9 @@
   <a href="javascript:void(0);" onclick="openTab('contact')">Contato</a>
 </nav>
 
+<!-- Language Switcher -->
+<div class="lang-switcher" onclick="switchLanguage()">PT</div>
+
 <!-- Botão Back-to-Top -->
 <div id="backToTop" onclick="scrollToTop()">
   <i class="fas fa-chevron-up"></i>
@@ -300,7 +358,7 @@
 <!-- Aba Início -->
 <div id="home" class="tab-content active">
   <!-- Foto de Capa -->
-  <img src="https://scontent.flis4-1.fna.fbcdn.net/v/t39.30808-6/458683849_1971876556592854_8672577950390445316_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=SnxJQ7zNHqMQ7kNvgE7E8GN&_nc_oc=AdgBFnuxJ4hNZ7olz1qonKcSDaXx1nQxRIOM283PNxCxsF4SxEg5MNrqr0xtTIP-YQU&_nc_zt=23&_nc_ht=scontent.flis4-1.fna&_nc_gid=A4olA54Bj-c90DYVOO5RjlR&oh=00_AYCDzT6Y5qEVJbILzjBlbqOASPuTHdOfMNoVfhERVOYSNQ&oe=67C3072E" alt="Stand PrisCar" class="banner-image">
+  <img src="https://scontent.flis4-1.fna.fbcdn.net/v/t39.30808-6/458683849_1971876556592854_8672577950390445316_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=SnxJQ7zNHqMQ7kNvgE7E8GN&_nc_oc=AdgBFnuxJ4hNZ7olz1qonKcSDaXx1nQxRIOM283PNxCxsF4SxEg5MNrqr0xtTIP-YQU&_nc_zt=23&_nc_ht=scontent.flis4-1.fna&_nc_gid=A4olA54Bj-c90DYVOO5RjlR&oh=00_AYCDzT6Y5qEVJbILzjBlbqOASPuTHdOfMNoVfhERVOYSNQ&oe=67C3072E" alt="Stand PrisCar" class="banner-image" loading="lazy">
   <!-- Descrição Extensa -->
   <div class="welcome-description">
     <h2>Bem-vindo à PrisCar</h2>
@@ -328,14 +386,14 @@
   </div>
   <div class="car-list">
     <div class="car" data-type="sedan" data-price="25000" onclick="openCarModal('bmw')">
-      <img src="imagens/bmw-serie3.jpg" alt="BMW Série 3">
+      <img src="imagens/bmw-serie3.jpg" alt="BMW Série 3" loading="lazy">
       <div class="info">
         <h3>BMW Série 3</h3>
         <p>25.000€</p>
       </div>
     </div>
     <div class="car" data-type="suv" data-price="22000" onclick="openCarModal('audi')">
-      <img src="imagens/audi-a4.jpg" alt="Audi A4">
+      <img src="imagens/audi-a4.jpg" alt="Audi A4" loading="lazy">
       <div class="info">
         <h3>Audi A4</h3>
         <p>22.500€</p>
@@ -344,9 +402,9 @@
   </div>
   <!-- Carrossel de Imagens -->
   <div class="carousel">
-    <img src="imagens/bmw-serie3.jpg" alt="BMW Série 3">
-    <img src="imagens/audi-a4.jpg" alt="Audi A4">
-    <img src="imagens/mercedes.jpg" alt="Mercedes-Benz">
+    <img src="imagens/bmw-serie3.jpg" alt="BMW Série 3" loading="lazy">
+    <img src="imagens/audi-a4.jpg" alt="Audi A4" loading="lazy">
+    <img src="imagens/mercedes.jpg" alt="Mercedes-Benz" loading="lazy">
   </div>
 </div>
 
@@ -398,7 +456,7 @@
     const tabs = document.querySelectorAll('.tab-content');
     tabs.forEach(tab => tab.classList.remove('active'));
     const target = document.getElementById(tabName);
-    if(target) { target.classList.add('active'); }
+    if (target) { target.classList.add('active'); }
   }
   
   // Modal de Carro
@@ -446,8 +504,7 @@
   // Back-to-top button
   window.addEventListener("scroll", function() {
     const btn = document.getElementById("backToTop");
-    if (window.pageYOffset > 300) { btn.style.display = "block"; }
-    else { btn.style.display = "none"; }
+    btn.style.display = window.pageYOffset > 300 ? "block" : "none";
   });
   function scrollToTop() {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -467,6 +524,15 @@
   // Modo Dark/Light Toggle
   const themeToggleBtn = document.createElement("div");
   themeToggleBtn.classList.add("theme-toggle");
+  themeToggleBtn.style.position = "fixed";
+  themeToggleBtn.style.bottom = "20px";
+  themeToggleBtn.style.right = "20px";
+  themeToggleBtn.style.backgroundColor = "#333";
+  themeToggleBtn.style.color = "#fff";
+  themeToggleBtn.style.padding = "10px";
+  themeToggleBtn.style.borderRadius = "50%";
+  themeToggleBtn.style.cursor = "pointer";
+  themeToggleBtn.style.zIndex = "1100";
   themeToggleBtn.innerHTML = '<i class="fas fa-moon"></i>';
   themeToggleBtn.onclick = function() {
     document.body.classList.toggle("dark-mode");
@@ -485,6 +551,19 @@
     body.dark-mode .contact-form button { background-color: #555; }
   `;
   document.head.appendChild(darkModeCSS);
+  
+  // Exemplo simples de Language Switcher (apenas troca texto)
+  function switchLanguage() {
+    alert("Função de troca de idioma não implementada neste exemplo.");
+  }
+  
+  // Google Analytics (exemplo)
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-XXXXXXXXX-X', 'auto');
+  ga('send', 'pageview');
 </script>
 
 </body>
