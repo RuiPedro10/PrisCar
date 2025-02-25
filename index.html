@@ -1,246 +1,490 @@
 <!DOCTYPE html>
 <html lang="pt">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PrisCar - Stand de Automóveis</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        /* Reset de estilo básico */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: Arial, sans-serif;
-            color: #333;
-            line-height: 1.6;
-        }
-
-        /* Cabeçalho e Barra de Navegação */
-        header {
-            background: #000;
-            color: white;
-            padding: 15px 0;
-            text-align: center;
-            font-size: 32px;
-            text-transform: uppercase;
-            font-weight: bold;
-        }
-
-        nav {
-            background: #333;
-            padding: 10px;
-            text-align: center;
-        }
-        nav a {
-            color: white;
-            text-decoration: none;
-            margin: 15px;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        /* Conteúdo das Abas */
-        .tab-content {
-            display: none;
-        }
-        .active-tab {
-            display: block;
-        }
-
-        /* Hero Section */
-        .hero {
-            background: url('imagens/stand-cars.jpg') no-repeat center center/cover;
-            height: 400px;
-            color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 36px;
-            font-weight: bold;
-            text-transform: uppercase;
-        }
-
-        /* Seções de Carros */
-        .container {
-            width: 80%;
-            margin: auto;
-            padding: 50px 0;
-        }
-        .car-list {
-            display: flex;
-            justify-content: space-around;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-
-        .car {
-            background: #fff;
-            padding: 20px;
-            width: 300px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
-        .car img {
-            width: 100%;
-            border-radius: 8px;
-            margin-bottom: 15px;
-        }
-        .car h3 {
-            font-size: 22px;
-            margin-bottom: 10px;
-        }
-        .car p {
-            font-size: 18px;
-            margin-bottom: 10px;
-        }
-
-        /* Contato */
-        .contact-info {
-            background: #fff;
-            padding: 50px 0;
-            text-align: center;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        .contact-info p {
-            font-size: 20px;
-        }
-        .contact-info h2 {
-            font-size: 30px;
-            margin-bottom: 20px;
-        }
-        .contact-form {
-            width: 60%;
-            margin: auto;
-            padding: 20px;
-            background-color: #f9f9f9;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        .contact-form input, .contact-form textarea {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-        .contact-form button {
-            background: #000;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 4px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-        .contact-form button:hover {
-            background: #444;
-        }
-
-        /* Rodapé */
-        footer {
-            background: #333;
-            color: white;
-            padding: 15px;
-            text-align: center;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Stand de Automóveis PrisCar - Encontre o carro dos seus sonhos com qualidade e preços acessíveis.">
+  <meta name="keywords" content="stand de carros, carros novos, carros usados, venda de carros, PrisCar">
+  <meta name="author" content="Rui Pedro">
+  <title>PrisCar - Stand de Automóveis</title>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    /* ==================== RESET & BASE ==================== */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Roboto', sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      color: #333;
+      scroll-behavior: smooth;
+    }
+    a { text-decoration: none; }
+    
+    /* ==================== CABEÇALHO & NAVEGAÇÃO ==================== */
+    header {
+      background-color: #000;
+      color: #fff;
+      text-align: center;
+      padding: 20px 0;
+      font-size: 36px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+    nav {
+      background-color: #333;
+      padding: 10px 0;
+      text-align: center;
+      position: sticky;
+      top: 0;
+      width: 100%;
+      z-index: 999;
+      transition: background-color 0.3s ease;
+    }
+    nav a {
+      color: #fff;
+      margin: 0 20px;
+      font-size: 18px;
+      font-weight: 500;
+      text-transform: uppercase;
+      transition: color 0.3s;
+    }
+    nav a:hover { color: #ffcc00; }
+    
+    /* ==================== CONTEÚDO DAS ABAS ==================== */
+    .tab-content { display: none; padding: 20px; animation: fadeIn 0.5s; }
+    .tab-content.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    
+    /* ==================== ABA INÍCIO ==================== */
+    .banner-image {
+      width: 100%;
+      height: 400px;
+      object-fit: cover;
+      background-position: center;
+      display: block;
+    }
+    .welcome-description {
+      padding: 40px 20px;
+      background-color: #f0f0f0;
+      text-align: center;
+    }
+    .welcome-description h2 {
+      font-size: 32px;
+      font-weight: 600;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+    }
+    .welcome-description p {
+      font-size: 18px;
+      color: #666;
+      line-height: 1.8;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    /* ==================== ABA CARROS ==================== */
+    .car-filter {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin: 30px 0;
+      flex-wrap: wrap;
+    }
+    .car-filter select {
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    .car-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+      justify-items: center;
+      padding: 50px;
+    }
+    .car {
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease-in-out;
+      cursor: pointer;
+      overflow: hidden;
+    }
+    .car:hover { transform: scale(1.05); }
+    .car img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-bottom: 2px solid #ccc;
+    }
+    .car .info { padding: 15px; }
+    .car h3 { font-size: 24px; font-weight: 600; }
+    .car p { font-size: 16px; color: #666; }
+    
+    /* ==================== MODAL DO CARRO ==================== */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+    .modal-content {
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      width: 70%;
+      text-align: center;
+      position: relative;
+    }
+    .modal-content img {
+      width: 100%;
+      max-height: 400px;
+      object-fit: contain;
+      margin-bottom: 20px;
+    }
+    .modal .close {
+      position: absolute;
+      top: 10px;
+      right: 20px;
+      color: #333;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    
+    /* ==================== ABA SOBRE ==================== */
+    #about {
+      padding: 40px;
+      text-align: center;
+    }
+    #about h2 { font-size: 32px; margin-bottom: 20px; text-transform: uppercase; }
+    #about p { font-size: 18px; max-width: 800px; margin: 0 auto; line-height: 1.8; }
+    .testimonials {
+      margin-top: 40px;
+      padding: 20px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      max-width: 800px;
+      margin: 40px auto;
+    }
+    .testimonials h3 { font-size: 24px; margin-bottom: 10px; }
+    .testimonials p { font-size: 16px; color: #555; }
+    .map-container {
+      margin-top: 40px;
+      max-width: 800px;
+      margin: 40px auto;
+    }
+    .map-container iframe {
+      width: 100%;
+      height: 300px;
+      border: 0;
+      border-radius: 8px;
+    }
+    
+    /* ==================== ABA CONTATO ==================== */
+    #contact {
+      padding: 40px;
+      text-align: center;
+    }
+    #contact h2 { font-size: 32px; margin-bottom: 20px; text-transform: uppercase; }
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .contact-form input, .contact-form textarea {
+      width: 100%;
+      max-width: 400px;
+      padding: 12px;
+      font-size: 16px;
+      margin-bottom: 20px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    .contact-form button {
+      padding: 15px;
+      background-color: #ffcc00;
+      color: white;
+      font-size: 18px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    .contact-form button:hover { background-color: #e6b800; }
+    
+    /* ==================== RODAPÉ ==================== */
+    footer {
+      background-color: #333;
+      color: #fff;
+      text-align: center;
+      padding: 15px;
+      position: relative;
+      margin-top: 40px;
+    }
+    footer p { font-size: 14px; }
+    footer a { color: #ffcc00; text-decoration: none; }
+    
+    /* ==================== BOTÃO BACK TO TOP ==================== */
+    #backToTop {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      background-color: #333;
+      color: #fff;
+      padding: 10px;
+      border-radius: 50%;
+      cursor: pointer;
+      z-index: 1100;
+      display: none;
+    }
+    
+    /* ==================== COOKIE CONSENT POPUP ==================== */
+    #cookieConsent {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: #222;
+      color: #fff;
+      padding: 15px;
+      text-align: center;
+      z-index: 1100;
+      display: none;
+    }
+    #cookieConsent button {
+      background: #ffcc00;
+      border: none;
+      padding: 8px 15px;
+      margin-left: 10px;
+      cursor: pointer;
+      border-radius: 5px;
+      font-weight: 600;
+    }
+  </style>
 </head>
 <body>
 
+<!-- Cabeçalho -->
 <header>PrisCar - Stand de Automóveis</header>
 
+<!-- Navegação -->
 <nav>
-    <a onclick="openTab('home')">Início</a>
-    <a onclick="openTab('cars')">Carros</a>
-    <a onclick="openTab('about')">Sobre</a>
-    <a onclick="openTab('contact')">Contato</a>
+  <a href="javascript:void(0);" onclick="openTab('home')">Início</a>
+  <a href="javascript:void(0);" onclick="openTab('cars')">Carros</a>
+  <a href="javascript:void(0);" onclick="openTab('about')">Sobre</a>
+  <a href="javascript:void(0);" onclick="openTab('contact')">Contato</a>
 </nav>
 
-<!-- Hero Section -->
-<div class="hero">
-    <h1>Encontre o Carro dos Seus Sonhos</h1>
+<!-- Botão Back-to-Top -->
+<div id="backToTop" onclick="scrollToTop()">
+  <i class="fas fa-chevron-up"></i>
 </div>
 
-<!-- Seções Dinâmicas -->
-<div id="home" class="tab-content active-tab">
-    <div class="container">
-        <h2>Bem-vindo ao PrisCar!</h2>
-        <p>Oferecemos os melhores carros a preços acessíveis. Encontre o carro dos seus sonhos com a gente.</p>
-    </div>
+<!-- Cookie Consent Popup -->
+<div id="cookieConsent">
+  <span>Utilizamos cookies para melhorar sua experiência. Ao continuar, você concorda com nosso uso de cookies.</span>
+  <button onclick="acceptCookies()">Aceitar</button>
 </div>
 
+<!-- Aba Início -->
+<div id="home" class="tab-content active">
+  <!-- Foto de Capa -->
+  <img src="https://scontent.flis4-1.fna.fbcdn.net/v/t39.30808-6/458683849_1971876556592854_8672577950390445316_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=SnxJQ7zNHqMQ7kNvgE7E8GN&_nc_oc=AdgBFnuxJ4hNZ7olz1qonKcSDaXx1nQxRIOM283PNxCxsF4SxEg5MNrqr0xtTIP-YQU&_nc_zt=23&_nc_ht=scontent.flis4-1.fna&_nc_gid=A4olA54Bj-c90DYVOO5RjlR&oh=00_AYCDzT6Y5qEVJbILzjBlbqOASPuTHdOfMNoVfhERVOYSNQ&oe=67C3072E" alt="Stand PrisCar" class="banner-image">
+  <!-- Descrição Extensa -->
+  <div class="welcome-description">
+    <h2>Bem-vindo à PrisCar</h2>
+    <p>
+      Na PrisCar, nossa missão é oferecer aos nossos clientes a melhor experiência na compra do seu veículo. Com um extenso portfólio de carros novos e seminovos, trabalhamos para garantir que você encontre o modelo ideal para suas necessidades. Reconhecidos pela transparência, confiança e preços justos, proporcionamos um atendimento personalizado, financiamento facilitado e suporte pós-venda completo. Visite-nos e descubra o carro dos seus sonhos!
+    </p>
+  </div>
+</div>
+
+<!-- Aba Carros -->
 <div id="cars" class="tab-content">
-    <div class="container">
-        <h2>Carros Disponíveis</h2>
-        <div class="car-list">
-            <div class="car">
-                <img src="imagens/bmw-serie3.jpg" alt="BMW Série 3">
-                <h3>BMW Série 3</h3>
-                <p>Preço: 25.000€</p>
-                <p>Descrição breve do carro.</p>
-            </div>
-            <div class="car">
-                <img src="imagens/audi-a4.jpg" alt="Audi A4">
-                <h3>Audi A4</h3>
-                <p>Preço: 22.500€</p>
-                <p>Descrição breve do carro.</p>
-            </div>
-        </div>
+  <h2>Carros Disponíveis</h2>
+  <div class="car-filter">
+    <select id="priceFilter" onchange="filterCars()">
+      <option value="">Filtrar por Preço</option>
+      <option value="up">Acima de 25.000€</option>
+      <option value="down">Abaixo de 25.000€</option>
+    </select>
+    <select id="typeFilter" onchange="filterCars()">
+      <option value="">Filtrar por Tipo</option>
+      <option value="sedan">Sedan</option>
+      <option value="suv">SUV</option>
+      <option value="hatch">Hatch</option>
+    </select>
+  </div>
+  <div class="car-list">
+    <div class="car" data-type="sedan" data-price="25000" onclick="openCarModal('bmw')">
+      <img src="imagens/bmw-serie3.jpg" alt="BMW Série 3">
+      <div class="info">
+        <h3>BMW Série 3</h3>
+        <p>25.000€</p>
+      </div>
     </div>
+    <div class="car" data-type="suv" data-price="22000" onclick="openCarModal('audi')">
+      <img src="imagens/audi-a4.jpg" alt="Audi A4">
+      <div class="info">
+        <h3>Audi A4</h3>
+        <p>22.500€</p>
+      </div>
+    </div>
+  </div>
+  <!-- Carrossel de Imagens -->
+  <div class="carousel">
+    <img src="imagens/bmw-serie3.jpg" alt="BMW Série 3">
+    <img src="imagens/audi-a4.jpg" alt="Audi A4">
+    <img src="imagens/mercedes.jpg" alt="Mercedes-Benz">
+  </div>
 </div>
 
+<!-- Modal de Carro -->
+<div id="carModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeCarModal()">×</span>
+    <img id="carImage" src="" alt="Carro">
+    <h3 id="carPrice"></h3>
+    <p id="carDescription"></p>
+  </div>
+</div>
+
+<!-- Aba Sobre -->
 <div id="about" class="tab-content">
-    <div class="container">
-        <h2>Sobre a PrisCar</h2>
-        <p>A PrisCar é um stand de automóveis com uma grande variedade de carros de qualidade, sempre com um atendimento personalizado. Estamos no mercado para oferecer o melhor para os nossos clientes!</p>
-    </div>
+  <h2>Sobre a PrisCar</h2>
+  <p>
+    Somos um stand de automóveis com vasta experiência no mercado. Trabalhamos com carros novos e usados, garantindo a qualidade e a satisfação dos nossos clientes.
+  </p>
+  <div class="testimonials">
+    <h3>O que dizem nossos clientes</h3>
+    <p>"Comprei meu carro na PrisCar e o atendimento foi excepcional. Recomendo a todos!"</p>
+  </div>
+  <div class="map-container">
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2789.199093416601!2d-8.534276435056066!3d41.31979842929053!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd1ae93f76e32f77%3A0x66c0f7f40f4c779!2sAv.%20da%20Corredoura%20908%2C%204580%20Vilela!5e0!3m2!1spt-PT!2spt!4v1676331066232!5m2!1spt-PT!2spt" allowfullscreen="" loading="lazy"></iframe>
+  </div>
 </div>
 
+<!-- Aba Contato -->
 <div id="contact" class="tab-content">
-    <div class="contact-info">
-        <h2>Entre em Contato Conosco</h2>
-        <p>Preencha o formulário abaixo para nos enviar sua mensagem:</p>
-        <div class="contact-form">
-            <form action="mailto:standpriscar@gmail.com" method="post" enctype="text/plain">
-                <label for="name">Nome:</label>
-                <input type="text" id="name" name="name" placeholder="Digite seu nome" required>
-
-                <label for="email">E-mail:</label>
-                <input type="email" id="email" name="email" placeholder="Digite seu e-mail" required>
-
-                <label for="phone">Telefone:</label>
-                <input type="tel" id="phone" name="phone" placeholder="Digite seu número de telefone" required>
-
-                <label for="message">Mensagem:</label>
-                <textarea id="message" name="message" rows="4" placeholder="Digite sua mensagem" required></textarea>
-
-                <button type="submit">Enviar Mensagem</button>
-            </form>
-        </div>
-    </div>
+  <h2>Entre em Contato Conosco</h2>
+  <form class="contact-form" action="mailto:standpriscar@gmail.com" method="post" enctype="text/plain">
+    <input type="text" name="name" placeholder="Nome" required>
+    <input type="email" name="email" placeholder="Email" required>
+    <textarea name="message" placeholder="Sua Mensagem" rows="5" required></textarea>
+    <button type="submit">Enviar</button>
+  </form>
 </div>
 
-<!-- Rodapé -->
+<!-- Rodapé Comum -->
 <footer>
-    <p>&copy; 2025 PrisCar - Todos os direitos reservados.</p>
-    <p><a href="mailto:standpriscar@gmail.com">Envie-nos um email</a></p>
+  <p>&copy; 2025 PrisCar - Stand de Automóveis | Todos os direitos reservados.</p>
+  <p><a href="mailto:standpriscar@gmail.com">Contato por Email</a></p>
 </footer>
 
-<!-- JavaScript para Gerenciar as Abas -->
 <script>
-    function openTab(tabName) {
-        // Esconder todas as abas
-        const tabs = document.querySelectorAll('.tab-content');
-        tabs.forEach(tab => tab.classList.remove('active-tab'));
-
-        // Mostrar a aba selecionada
-        document.getElementById(tabName).classList.add('active-tab');
+  // Navegação entre abas
+  function openTab(tabName) {
+    const tabs = document.querySelectorAll('.tab-content');
+    tabs.forEach(tab => tab.classList.remove('active'));
+    const target = document.getElementById(tabName);
+    if(target) { target.classList.add('active'); }
+  }
+  
+  // Modal de Carro
+  function openCarModal(carId) {
+    const modal = document.getElementById('carModal');
+    modal.style.display = "flex";
+    const carInfo = {
+      bmw: {
+        image: 'imagens/bmw-serie3.jpg',
+        price: '25.000€',
+        description: 'BMW Série 3 com motor 2.0 Turbo, ano de 2020, com 30.000 km rodados.'
+      },
+      audi: {
+        image: 'imagens/audi-a4.jpg',
+        price: '22.500€',
+        description: 'Audi A4, motor 1.8 TFSI, ano de 2019, 50.000 km, excelente estado.'
+      }
+    };
+    document.getElementById('carImage').src = carInfo[carId].image;
+    document.getElementById('carPrice').textContent = carInfo[carId].price;
+    document.getElementById('carDescription').textContent = carInfo[carId].description;
+  }
+  
+  // Fechar Modal
+  function closeCarModal() {
+    document.getElementById('carModal').style.display = "none";
+  }
+  
+  // Filtrar Carros
+  function filterCars() {
+    const priceFilter = document.getElementById('priceFilter').value;
+    const typeFilter = document.getElementById('typeFilter').value;
+    const cars = document.querySelectorAll('.car');
+    cars.forEach(car => {
+      const carPrice = parseInt(car.getAttribute('data-price'));
+      const carType = car.getAttribute('data-type');
+      let show = true;
+      if (priceFilter === 'up' && carPrice <= 25000) show = false;
+      if (priceFilter === 'down' && carPrice >= 25000) show = false;
+      if (typeFilter && carType !== typeFilter) show = false;
+      car.style.display = show ? 'block' : 'none';
+    });
+  }
+  
+  // Back-to-top button
+  window.addEventListener("scroll", function() {
+    const btn = document.getElementById("backToTop");
+    if (window.pageYOffset > 300) { btn.style.display = "block"; }
+    else { btn.style.display = "none"; }
+  });
+  function scrollToTop() {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+  
+  // Cookie Consent Popup
+  window.addEventListener("load", function() {
+    if (!localStorage.getItem("cookiesAccepted")) {
+      document.getElementById("cookieConsent").style.display = "block";
     }
+  });
+  function acceptCookies() {
+    localStorage.setItem("cookiesAccepted", "true");
+    document.getElementById("cookieConsent").style.display = "none";
+  }
+  
+  // Modo Dark/Light Toggle
+  const themeToggleBtn = document.createElement("div");
+  themeToggleBtn.classList.add("theme-toggle");
+  themeToggleBtn.innerHTML = '<i class="fas fa-moon"></i>';
+  themeToggleBtn.onclick = function() {
+    document.body.classList.toggle("dark-mode");
+    themeToggleBtn.innerHTML = document.body.classList.contains("dark-mode") ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+  };
+  document.body.appendChild(themeToggleBtn);
+  
+  // Dark mode styles
+  const darkModeCSS = document.createElement("style");
+  darkModeCSS.innerHTML = `
+    body.dark-mode { background-color: #222; color: #ddd; }
+    body.dark-mode header, body.dark-mode nav, body.dark-mode footer { background-color: #111; }
+    body.dark-mode .welcome-description { background-color: #333; color: #ccc; }
+    body.dark-mode .car { background-color: #333; color: #ddd; }
+    body.dark-mode .contact-form input, body.dark-mode .contact-form textarea { background-color: #444; color: #fff; border: 1px solid #555; }
+    body.dark-mode .contact-form button { background-color: #555; }
+  `;
+  document.head.appendChild(darkModeCSS);
 </script>
 
 </body>
