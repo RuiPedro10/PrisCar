@@ -4,30 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PrisCar - Stand de Automóveis</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        body {
-            font-family: Arial, sans-serif;
+        /* Reset de estilo básico */
+        * {
             margin: 0;
             padding: 0;
-            text-align: center;
-            color: white;
+            box-sizing: border-box;
         }
+        body {
+            font-family: Arial, sans-serif;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Cabeçalho e Barra de Navegação */
         header {
-            background: rgba(0, 0, 0, 0.8);
+            background: #000;
             color: white;
-            padding: 20px;
-            font-size: 28px;
-            font-weight: bold;
+            padding: 15px 0;
+            text-align: center;
+            font-size: 32px;
             text-transform: uppercase;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
+            font-weight: bold;
         }
+
         nav {
-            background: rgba(0, 0, 0, 0.7);
+            background: #333;
             padding: 10px;
-            position: relative;
+            text-align: center;
         }
         nav a {
             color: white;
@@ -35,23 +40,31 @@
             margin: 15px;
             font-size: 18px;
             font-weight: bold;
+            cursor: pointer;
         }
+
+        /* Conteúdo das Abas */
+        .tab-content {
+            display: none;
+        }
+        .active-tab {
+            display: block;
+        }
+
+        /* Hero Section */
         .hero {
-            background: url('/mnt/data/PrisCar Logo.jpg') no-repeat center center/cover;
+            background: url('imagens/stand-cars.jpg') no-repeat center center/cover;
             height: 400px;
+            color: white;
             display: flex;
-            align-items: center;
             justify-content: center;
+            align-items: center;
             font-size: 36px;
             font-weight: bold;
             text-transform: uppercase;
-            margin-top: 60px;
         }
-        .top-image {
-            width: 100%;
-            height: 300px;
-            object-fit: cover;
-        }
+
+        /* Seções de Carros */
         .container {
             width: 80%;
             margin: auto;
@@ -59,71 +72,176 @@
         }
         .car-list {
             display: flex;
+            justify-content: space-around;
             flex-wrap: wrap;
-            justify-content: center;
+            gap: 20px;
         }
+
         .car {
-            background: rgba(255, 255, 255, 0.95);
-            margin: 15px;
+            background: #fff;
             padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
             width: 300px;
-            text-align: left;
-            color: black;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
         }
         .car img {
             width: 100%;
             border-radius: 8px;
+            margin-bottom: 15px;
         }
-        .contact {
-            background: rgba(0, 0, 0, 0.8);
-            color: white;
+        .car h3 {
+            font-size: 22px;
+            margin-bottom: 10px;
+        }
+        .car p {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        /* Contato */
+        .contact-info {
+            background: #fff;
+            padding: 50px 0;
+            text-align: center;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .contact-info p {
+            font-size: 20px;
+        }
+        .contact-info h2 {
+            font-size: 30px;
+            margin-bottom: 20px;
+        }
+        .contact-form {
+            width: 60%;
+            margin: auto;
             padding: 20px;
-            margin-top: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-        footer {
-            background: rgba(0, 0, 0, 0.8);
-            color: white;
-            padding: 10px;
-            position: relative;
+        .contact-form input, .contact-form textarea {
             width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .contact-form button {
+            background: #000;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .contact-form button:hover {
+            background: #444;
+        }
+
+        /* Rodapé */
+        footer {
+            background: #333;
+            color: white;
+            padding: 15px;
+            text-align: center;
         }
     </style>
 </head>
 <body>
-    <header>PrisCar - Stand de Automóveis</header>
-    <nav>
-        <a href="#">Início</a>
-        <a href="#">Carros</a>
-        <a href="#">Sobre</a>
-        <a href="#">Contato</a>
-    </nav>
-    <img class="top-image" src="https://via.placeholder.com/1500x300" alt="Imagem do Stand">
-    <div class="hero">Bem-vindo à PrisCar</div>
+
+<header>PrisCar - Stand de Automóveis</header>
+
+<nav>
+    <a onclick="openTab('home')">Início</a>
+    <a onclick="openTab('cars')">Carros</a>
+    <a onclick="openTab('about')">Sobre</a>
+    <a onclick="openTab('contact')">Contato</a>
+</nav>
+
+<!-- Hero Section -->
+<div class="hero">
+    <h1>Encontre o Carro dos Seus Sonhos</h1>
+</div>
+
+<!-- Seções Dinâmicas -->
+<div id="home" class="tab-content active-tab">
+    <div class="container">
+        <h2>Bem-vindo ao PrisCar!</h2>
+        <p>Oferecemos os melhores carros a preços acessíveis. Encontre o carro dos seus sonhos com a gente.</p>
+    </div>
+</div>
+
+<div id="cars" class="tab-content">
     <div class="container">
         <h2>Carros Disponíveis</h2>
         <div class="car-list">
             <div class="car">
-                <img src="https://via.placeholder.com/300" alt="Carro 1">
+                <img src="imagens/bmw-serie3.jpg" alt="BMW Série 3">
                 <h3>BMW Série 3</h3>
                 <p>Preço: 25.000€</p>
                 <p>Descrição breve do carro.</p>
             </div>
             <div class="car">
-                <img src="https://via.placeholder.com/300" alt="Carro 2">
+                <img src="imagens/audi-a4.jpg" alt="Audi A4">
                 <h3>Audi A4</h3>
                 <p>Preço: 22.500€</p>
                 <p>Descrição breve do carro.</p>
             </div>
         </div>
     </div>
-    <div class="contact">
-        <h2>Contato</h2>
-        <p>📍 Endereço: Av. da Corredoura 908, 4580 Vilela</p>
-        <p>📞 Telefone: 936-707-997</p>
-        <p>📧 Email: standpriscar@gmail.com</p>
+</div>
+
+<div id="about" class="tab-content">
+    <div class="container">
+        <h2>Sobre a PrisCar</h2>
+        <p>A PrisCar é um stand de automóveis com uma grande variedade de carros de qualidade, sempre com um atendimento personalizado. Estamos no mercado para oferecer o melhor para os nossos clientes!</p>
     </div>
-    <footer>&copy; 2025 PrisCar - Todos os direitos reservados.</footer>
+</div>
+
+<div id="contact" class="tab-content">
+    <div class="contact-info">
+        <h2>Entre em Contato Conosco</h2>
+        <p>Preencha o formulário abaixo para nos enviar sua mensagem:</p>
+        <div class="contact-form">
+            <form action="mailto:standpriscar@gmail.com" method="post" enctype="text/plain">
+                <label for="name">Nome:</label>
+                <input type="text" id="name" name="name" placeholder="Digite seu nome" required>
+
+                <label for="email">E-mail:</label>
+                <input type="email" id="email" name="email" placeholder="Digite seu e-mail" required>
+
+                <label for="phone">Telefone:</label>
+                <input type="tel" id="phone" name="phone" placeholder="Digite seu número de telefone" required>
+
+                <label for="message">Mensagem:</label>
+                <textarea id="message" name="message" rows="4" placeholder="Digite sua mensagem" required></textarea>
+
+                <button type="submit">Enviar Mensagem</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Rodapé -->
+<footer>
+    <p>&copy; 2025 PrisCar - Todos os direitos reservados.</p>
+    <p><a href="mailto:standpriscar@gmail.com">Envie-nos um email</a></p>
+</footer>
+
+<!-- JavaScript para Gerenciar as Abas -->
+<script>
+    function openTab(tabName) {
+        // Esconder todas as abas
+        const tabs = document.querySelectorAll('.tab-content');
+        tabs.forEach(tab => tab.classList.remove('active-tab'));
+
+        // Mostrar a aba selecionada
+        document.getElementById(tabName).classList.add('active-tab');
+    }
+</script>
+
 </body>
 </html>
