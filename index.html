@@ -9,8 +9,10 @@
   <meta name="keywords" content="stand de carros, carros novos, carros usados, venda de carros, PrisCar">
   <meta name="author" content="Rui Pedro">
   <title>PrisCar - Stand de Automóveis</title>
-  <!-- Manifest para PWA (exemplo) -->
+  <!-- Manifest para PWA -->
   <link rel="manifest" href="manifest.json">
+  <!-- Apple Touch Icon -->
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
   <!-- Font Awesome -->
@@ -25,7 +27,7 @@
       scroll-behavior: smooth;
     }
     a { text-decoration: none; }
-    
+
     /* ================= CABEÇALHO & NAVEGAÇÃO ================= */
     header {
       background: linear-gradient(45deg, #000, #444);
@@ -71,12 +73,12 @@
       cursor: pointer;
       z-index: 1100;
     }
-    
+
     /* ================= CONTEÚDO DAS ABAS ================= */
     .tab-content { display: none; padding: 80px 20px 20px; animation: fadeIn 0.5s; }
     .tab-content.active { display: block; }
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-    
+
     /* ================= ABA INÍCIO ================= */
     .banner-image {
       width: 100%;
@@ -86,6 +88,7 @@
       display: block;
       filter: brightness(0.8);
       transform: translateZ(0);
+      /* Parallax effect pode ser adicionado com JavaScript se desejado */
     }
     .welcome-description {
       padding: 40px 20px;
@@ -149,7 +152,7 @@
     .car h3 { font-size: 24px; font-weight: 600; }
     .car p { font-size: 16px; color: #666; }
     
-    /* Efeito 3D Flip (exemplo para cards) */
+    /* Exemplo de 3D Flip Card para detalhes (opcional) */
     .flip-card { background-color: transparent; perspective: 1000px; }
     .flip-card-inner {
       position: relative;
@@ -408,7 +411,6 @@
     </select>
   </div>
   <div class="car-list">
-    <!-- Exemplo com imagens reais do Unsplash -->
     <div class="car" data-type="sedan" data-price="25000" onclick="openCarModal('bmw')">
       <img src="https://images.unsplash.com/photo-1593720213065-41fcb436d8a9?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60" alt="BMW Série 3" loading="lazy">
       <div class="info">
@@ -482,6 +484,7 @@
     const target = document.getElementById(tabName);
     if (target) { target.classList.add('active'); }
   }
+  
   // Modal de Carro
   function openCarModal(carId) {
     const modal = document.getElementById('carModal');
@@ -502,10 +505,12 @@
     document.getElementById('carPrice').textContent = carInfo[carId].price;
     document.getElementById('carDescription').textContent = carInfo[carId].description;
   }
+  
   // Fechar Modal
   function closeCarModal() {
     document.getElementById('carModal').style.display = "none";
   }
+  
   // Filtrar Carros
   function filterCars() {
     const priceFilter = document.getElementById('priceFilter').value;
@@ -521,6 +526,7 @@
       car.style.display = show ? 'block' : 'none';
     });
   }
+  
   // Back-to-top button
   window.addEventListener("scroll", function() {
     const btn = document.getElementById("backToTop");
@@ -529,6 +535,7 @@
   function scrollToTop() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
+  
   // Cookie Consent Popup
   window.addEventListener("load", function() {
     if (!localStorage.getItem("cookiesAccepted")) {
@@ -539,6 +546,7 @@
     localStorage.setItem("cookiesAccepted", "true");
     document.getElementById("cookieConsent").style.display = "none";
   }
+  
   // Modo Dark/Light Toggle
   const themeToggleBtn = document.createElement("div");
   themeToggleBtn.classList.add("theme-toggle");
@@ -557,6 +565,7 @@
     themeToggleBtn.innerHTML = document.body.classList.contains("dark-mode") ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
   };
   document.body.appendChild(themeToggleBtn);
+  
   // Dark mode styles
   const darkModeCSS = document.createElement("style");
   darkModeCSS.innerHTML = `
@@ -568,8 +577,10 @@
     body.dark-mode .contact-form button { background-color: #555; }
   `;
   document.head.appendChild(darkModeCSS);
+  
   // Language Switcher (exemplo)
   function switchLanguage() { alert("Função de troca de idioma não implementada."); }
+  
   // Google Analytics (exemplo)
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
