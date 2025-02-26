@@ -1,313 +1,1149 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html >
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="description" content="Stand de Automóveis PrisCar - Encontre o carro dos seus sonhos com qualidade, segurança e preços acessíveis." />
-  <meta name="keywords" content="stand de carros, carros novos, carros usados, venda de carros, PrisCar" />
-  <meta name="author" content="Rui Pedro" />
-  <title>PrisCar - Stand de Automóveis</title>
   
-  <!-- Manifest para PWA -->
-  <link rel="manifest" href="manifest.json" />
-  <!-- Apple Touch Icon -->
-  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-  <!-- reCAPTCHA v2 -->
-  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   
-  <style>
-    /* RESET & BASE */
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Roboto', sans-serif; background: #f4f4f4; color: #333; scroll-behavior: smooth; line-height: 1.6; }
-    a { text-decoration: none; }
-    
-    /* CABEÇALHO & NAVEGAÇÃO */
-    header { background: linear-gradient(45deg, #000, #444); color: #fff; text-align: center; padding: 20px 0; font-size: 36px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; position: fixed; top: 0; width: 100%; z-index: 1000; }
-    nav { background: #333; padding: 10px 0; text-align: center; position: sticky; top: 80px; width: 100%; z-index: 1000; transition: background 0.3s ease; }
-    nav a { color: #fff; margin: 0 20px; font-size: 18px; font-weight: 500; text-transform: uppercase; transition: color 0.3s; }
-    nav a:hover { color: #ffcc00; }
-    .lang-switcher, .login-toggle { position: fixed; background: #222; color: #fff; padding: 8px 12px; border-radius: 4px; cursor: pointer; z-index: 1100; }
-    .lang-switcher { top: 20px; right: 20px; }
-    .login-toggle { top: 70px; right: 20px; background: #444; }
-    
-    /* CONTEÚDO DAS ABAS */
-    main { margin-top: 140px; }
-    .tab-content { display: none; padding: 80px 20px 20px; animation: fadeIn 0.5s; }
-    .tab-content.active { display: block; }
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-    
-    /* ABA INÍCIO */
-    .banner-image { width: 100%; height: 400px; object-fit: cover; background-position: center; display: block; filter: brightness(0.8); }
-    .welcome-description { padding: 40px 20px; background: #f0f0f0; text-align: center; }
-    .welcome-description h2 { font-size: 32px; font-weight: 600; margin-bottom: 20px; text-transform: uppercase; }
-    .welcome-description p { font-size: 18px; color: #666; line-height: 1.8; max-width: 800px; margin: 0 auto; }
-    .welcome-description .extended { text-align: justify; margin-top: 30px; }
-    .welcome-description .extended p { margin-bottom: 15px; }
-    
-    /* ABA CARROS */
-    .car-filter { display: flex; justify-content: center; gap: 15px; margin: 30px 0; flex-wrap: wrap; }
-    .car-filter select { padding: 10px; font-size: 16px; border-radius: 5px; border: 1px solid #ccc; }
-    .car-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; justify-items: center; padding: 50px; }
-    .car { background: #fff; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); transition: transform 0.3s ease-in-out; cursor: pointer; overflow: hidden; position: relative; }
-    .car:hover { transform: scale(1.05); }
-    .car img { width: 100%; height: 200px; object-fit: cover; border-bottom: 2px solid #ccc; transition: opacity 0.3s; }
-    .car:hover img { opacity: 0.8; }
-    .car .info { padding: 15px; }
-    .car h3 { font-size: 24px; font-weight: 600; }
-    .car p { font-size: 16px; color: #666; }
-    .btn-fav, .btn-compare { position: absolute; top: 10px; background: rgba(0,0,0,0.6); color: #fff; padding: 5px 8px; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; }
-    .btn-fav { left: 10px; }
-    .btn-compare { right: 10px; }
-    
-    /* MODAL DO CARRO */
-    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; display: flex; justify-content: center; align-items: center; }
-    .modal-content { background: #fff; padding: 20px; border-radius: 8px; width: 70%; text-align: center; position: relative; }
-    .modal-content img { width: 100%; max-height: 400px; object-fit: contain; margin-bottom: 20px; }
-    .modal .close { position: absolute; top: 10px; right: 20px; color: #333; font-size: 28px; font-weight: bold; cursor: pointer; }
-    
-    /* ABA SOBRE */
-    #about { padding: 40px; text-align: center; }
-    #about h2 { font-size: 32px; margin-bottom: 20px; text-transform: uppercase; }
-    #about p { font-size: 18px; max-width: 800px; margin: 0 auto; line-height: 1.8; }
-    .testimonials { margin-top: 40px; padding: 20px; background: #fff; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); max-width: 800px; margin: 40px auto; }
-    .testimonials h3 { font-size: 24px; margin-bottom: 10px; }
-    .testimonials p { font-size: 16px; color: #555; }
-    .map-container { margin-top: 40px; max-width: 800px; margin: 40px auto; }
-    .map-container iframe { width: 100%; height: 300px; border: 0; border-radius: 8px; }
-    .services { padding: 40px; background: #e9ecef; text-align: center; }
-    .services h2 { font-size: 32px; margin-bottom: 20px; text-transform: uppercase; }
-    .services .service-list { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; }
-    .services .service { background: #fff; padding: 20px; border-radius: 8px; width: 300px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-    .services .service h3 { font-size: 20px; margin-bottom: 10px; }
-    .services .service p { font-size: 16px; color: #555; }
-    
-    /* ABA CONTATO */
-    #contact { padding: 40px; text-align: center; }
-    #contact h2 { font-size: 32px; margin-bottom: 20px; text-transform: uppercase; }
-    .contact-form { display: flex; flex-direction: column; align-items: center; }
-    .contact-form input, .contact-form textarea { width: 100%; max-width: 400px; padding: 12px; font-size: 16px; margin-bottom: 20px; border-radius: 5px; border: 1px solid #ccc; }
-    .contact-form button { padding: 15px; background: #ffcc00; color: #fff; font-size: 18px; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.3s; }
-    .contact-form button:hover { background-color: #e6b800; }
-    .newsletter { background: #fff; padding: 20px; text-align: center; margin: 40px auto; max-width: 600px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-    .newsletter h3 { font-size: 24px; margin-bottom: 15px; }
-    .newsletter input { width: 80%; padding: 12px; font-size: 16px; margin-bottom: 10px; border-radius: 5px; border: 1px solid #ccc; }
-    .newsletter button { padding: 12px 20px; background: #007bff; color: #fff; font-size: 16px; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.3s; }
-    .newsletter button:hover { background-color: #0056b3; }
-    
-    /* RODAPÉ */
-    footer { background: #333; color: #fff; text-align: center; padding: 15px; margin-top: 40px; }
-    footer p { font-size: 14px; }
-    footer a { color: #ffcc00; }
-    
-    /* BOTÃO BACK TO TOP */
-    #backToTop { position: fixed; bottom: 20px; left: 20px; background: #333; color: #fff; padding: 10px; border-radius: 50%; cursor: pointer; z-index: 1100; display: none; }
-    
-    /* COOKIE CONSENT POPUP */
-    #cookieConsent { position: fixed; bottom: 0; left: 0; width: 100%; background: #222; color: #fff; padding: 15px; text-align: center; z-index: 1100; display: none; }
-    #cookieConsent button { background: #ffcc00; border: none; padding: 8px 15px; margin-left: 10px; cursor: pointer; border-radius: 5px; font-weight: 600; }
-    
-    /* RESPONSIVIDADE */
-    @media (max-width: 768px) {
-      header { font-size: 28px; padding: 15px 0; }
-      nav a { font-size: 16px; margin: 0 10px; }
-      .banner-image { height: 250px; }
-      .welcome-description h2 { font-size: 28px; }
-      .welcome-description p { font-size: 16px; }
-      .car-list { padding: 20px; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
-      .car img { height: 150px; }
-      .modal-content { width: 90%; }
-      .contact-form input, .contact-form textarea { max-width: 90%; }
-      .map-container iframe { height: 200px; }
-      .newsletter input { width: 90%; }
-    }
-    @media (max-width: 480px) {
-      header { font-size: 24px; }
-      nav a { font-size: 14px; margin: 0 5px; }
-      .banner-image { height: 200px; }
-      .welcome-description h2 { font-size: 24px; }
-      .welcome-description p { font-size: 14px; }
-    }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+  <link rel="shortcut icon" href="https://r.mobirisesite.com/1239168/assets/images/photo-1553440569-bcc63803a83d.jpeg" type="image/x-icon">
+  <meta name="description" content="Encontre os melhores carros à venda com preços acessíveis e opções variadas. Modelos novos e usados disponíveis para atender suas necessidades.">
+  <title>Venda de Carros: Modelos e Ofertas Imperdíveis para Você</title>
+  <link rel="stylesheet" href="https://r.mobirisesite.com/1239168/assets/web/assets/mobirise-icons2/mobirise2.css?rnd=1740528324247">
+  <link rel="stylesheet" href="https://r.mobirisesite.com/1239168/assets/bootstrap/css/bootstrap.min.css?rnd=1740528324247">
+  <link rel="stylesheet" href="https://r.mobirisesite.com/1239168/assets/bootstrap/css/bootstrap-grid.min.css?rnd=1740528324247">
+  <link rel="stylesheet" href="https://r.mobirisesite.com/1239168/assets/bootstrap/css/bootstrap-reboot.min.css?rnd=1740528324247">
+  <link rel="stylesheet" href="https://r.mobirisesite.com/1239168/assets/parallax/jarallax.css?rnd=1740528324247">
+  <link rel="stylesheet" href="https://r.mobirisesite.com/1239168/assets/dropdown/css/style.css?rnd=1740528324247">
+  <link rel="stylesheet" href="https://r.mobirisesite.com/1239168/assets/socicon/css/styles.css?rnd=1740528324247">
+  <link rel="stylesheet" href="https://r.mobirisesite.com/1239168/assets/theme/css/style.css?rnd=1740528324247">
+  <link rel="stylesheet" href="https://r.mobirisesite.com/1239168/assets/recaptcha.css?rnd=1740528324247">
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Roboto+Flex:wght@400;700&display=swap&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Flex:wght@400;700&display=swap&display=swap"></noscript>
+  <link rel="stylesheet" href="https://r.mobirisesite.com/1239168/assets/css/mbr-additional.css?rnd=1740528324247" type="text/css">
+  
+  
+  
+  
+
+
+<style>
+.navbar-fixed-top {
+  top: auto;
+}
+#mobirisePromo.container-banner {
+  height: 11rem;
+  opacity: 1;
+  -webkit-animation: 11s linear animationHeight;
+  -moz-animation: 11s linear animationHeight;
+    -o-animation: 11s linear animationHeight;
+       animation: 11s linear animationHeight;
+       transition: all  0.5s;
+}
+#mobirisePromo.container-banner.container-banner-closing {
+  pointer-events: none;
+  height: 0;
+  opacity: 0;
+  -webkit-animation: 0.5s linear animationClosing;
+  -moz-animation:  0.5s linear animationClosing;
+    -o-animation:  0.5s linear animationClosing;
+       animation:  0.5s linear animationClosing;
+}
+#mobirisePromo .banner {
+  min-height: 11rem;
+  position:fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: #fff;
+  padding: 10px;
+  opacity:1;
+  -webkit-animation: 11s linear animationBanner;
+  -moz-animation: 11s linear animationBanner;
+    -o-animation: 11s linear animationBanner;
+       animation: 11s linear animationBanner;
+  z-index: 1031;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+#mobirisePromo .banner p {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  animation: none;
+  visibility: visible;
+}
+#mobirisePromo .buy-license {
+  text-decoration: underline;
+}
+#mobirisePromo .banner .btn {
+  margin: 0.3rem 0.5rem;
+  animation: none;
+  visibility: visible;
+}
+.navbar.opened {
+    z-index: 1032;
+}
+#mobirisePromo .mbr-section-abuse-report {
+  margin-top: 0.8rem;
+  font-size: 80%;
+}
+#mobirisePromo .mbr-section-abuse-report a {
+  color: #aaa;
+}
+@-webkit-keyframes animationBanner { 0% { opacity: 0; top: -11rem; } 91% { opacity: 0; top: -11rem; } 100% { opacity: 1; top: 0; } }
+@-moz-keyframes animationBanner { 0% { opacity: 0; top: -11rem; } 91% { opacity: 0; top: -11rem; } 100% { opacity: 1; top: 0; } }
+@-o-keyframes animationBanner { 0% { opacity: 0; top: -11rem; } 91% { opacity: 0; top: -11rem; } 100% { opacity: 1; top: 0; } }
+   @keyframes animationBanner { 0% { opacity: 0; top: -11rem; } 91% { opacity: 0; top: -11rem; } 100% { opacity: 1; top: 0; } }
+@-webkit-keyframes animationHeight { 0% { height: 0; } 91% { height: 0; } 100% { height: 11rem; } }
+@-moz-keyframes animationHeight { 0% { height: 0; } 91% { height: 0; } 100% { height: 11rem; } }
+@-o-keyframes animationHeight { 0% { height: 0; } 91% { height: 0; } 100% { height: 11rem; } }
+   @keyframes animationHeight { 0% { height: 0; } 91% { height: 0; } 100% { height: 11rem; } }
+
+@-webkit-keyframes animationClosing { 0% { height: 11rem; opacity: 1; } 30% { height: 11rem; opacity: 0.5;} 100% { height: 0; opacity: 0;} }
+@-moz-keyframes animationClosing { 0% { height: 11rem; opacity: 1; } 30% { height: 11rem; opacity: 0.5;} 100% { height: 0; opacity: 0;} }
+@-o-keyframes animationClosing { 0% { height: 11rem; opacity: 1; } 30% { height: 11rem; opacity: 0.5;} 100% { height: 0; opacity: 0;} }
+@keyframes animationClosing { 0% { height: 11rem; opacity: 1; } 30% { height: 11rem; opacity: 0.5;} 100% { height: 0; opacity: 0;} }
+
+@media(max-width: 575px) {
+  #mobirisePromo.container-banner {
+    height: 14rem;
+  }
+  #mobirisePromo .banner {
+    min-height: 14rem;
+  }
+  @-webkit-keyframes animationBanner { 0% { opacity: 0; top: -14rem; } 91% { opacity: 0; top: -14rem; } 100% { opacity: 1; top: 0; } }
+  @-moz-keyframes animationBanner { 0% { opacity: 0; top: -14rem; } 91% { opacity: 0; top: -14rem; } 100% { opacity: 1; top: 0; } }
+  @-o-keyframes animationBanner { 0% { opacity: 0; top: -14rem; } 91% { opacity: 0; top: -14rem; } 100% { opacity: 1; top: 0; } }
+    @keyframes animationBanner { 0% { opacity: 0; top: -14rem; } 91% { opacity: 0; top: -14rem; } 100% { opacity: 1; top: 0; } }
+  @-webkit-keyframes animationHeight { 0% { height: 0; } 91% { height: 0; } 100% { height: 14rem; } }
+  @-moz-keyframes animationHeight { 0% { height: 0; } 91% { height: 0; } 100% { height: 14rem; } }
+  @-o-keyframes animationHeight { 0% { height: 0; } 91% { height: 0; } 100% { height: 14rem; } }
+    @keyframes animationHeight { 0% { height: 0; } 91% { height: 0; } 100% { height: 14rem; } }
+
+  @-webkit-keyframes animationClosing { 0% { height: 14rem; opacity: 1; } 30% { height: 14rem; opacity: 0.5;} 100% { height: 0; opacity: 0;} }
+  @-moz-keyframes animationClosing { 0% { height: 14rem; opacity: 1; } 30% { height: 14rem; opacity: 0.5;} 100% { height: 0; opacity: 0;} }
+  @-o-keyframes animationClosing { 0% { height: 14rem; opacity: 1; } 30% { height: 14rem; opacity: 0.5;} 100% { height: 0; opacity: 0;} }
+  @keyframes animationClosing { 0% { height: 14rem; opacity: 1; } 30% { height: 14rem; opacity: 0.5;} 100% { height: 0; opacity: 0;} }
+}
+</style>
 </head>
 <body>
-  <!-- Cabeçalho -->
-  <header>PrisCar - Stand de Automóveis</header>
-  
-  <!-- Navegação -->
-  <nav>
-    <a href="javascript:void(0);" onclick="openTab('home')">Início</a>
-    <a href="javascript:void(0);" onclick="openTab('cars')">Carros</a>
-    <a href="javascript:void(0);" onclick="openTab('about')">Sobre</a>
-    <a href="javascript:void(0);" onclick="openTab('contact')">Contato</a>
-  </nav>
-  
-  <!-- Language Switcher -->
-  <div class="lang-switcher" onclick="switchLanguage()">PT</div>
-  <!-- Login Toggle (Placeholder) -->
-  <div class="login-toggle" onclick="openLoginModal()">Login</div>
-  
-  <!-- Botão Back-to-Top -->
-  <div id="backToTop" onclick="scrollToTop()"><i class="fas fa-chevron-up"></i></div>
-  
-  <!-- Cookie Consent Popup -->
-  <div id="cookieConsent">
-    <span>Utilizamos cookies para melhorar sua experiência. Ao continuar, você concorda com nosso uso de cookies.</span>
-    <button onclick="acceptCookies()">Aceitar</button>
+<div class="container-banner" id="mobirisePromo">
+  <div class="banner align-center">
+    <button type="button" onclick="document.getElementById('mobirisePromo').classList.add('container-banner-closing')" class="btn-close" aria-label="Close" style="position: fixed;top: 16px;right: 16px;"></button>
+    <p class="mbr-text mbr-fonts-style display-7">The site was made with <a href="https://mobirise.com/builder/ai-website-builder.html" class="">Free AI Website Builder</a></p>
+    <div class="mbr-section-btn">
+      <a class="btn btn-sm btn-primary display-4" href="https://mobirise.com/p/">Get AI Kit!</a>
+      <a class="btn btn-sm btn-secondary display-4" href="https://my.mobirise.com/buy.php?p=126&u=3815374&st=1239168&dm=1239168.mobirisesite.com">Remove This Banner</a>
+    </div>
+    <div class="mbr-section-abuse-report">
+      <a href="mailto:support@mobirise.com?subject=Mobirise Abuse Report 1239168.mobirisesite.com">Report Abuse</a>
+    </div>
   </div>
+</div>
   
-  <main>
-    <!-- Aba Início -->
-    <div id="home" class="tab-content active">
-      <img src="https://scontent.flis4-1.fna.fbcdn.net/v/t39.30808-6/458683849_1971876556592854_8672577950390445316_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=SnxJQ7zNHqMQ7kNvgE7E8GN&_nc_oc=AdgBFnuxJ4hNZ7olz1qonKcSDaXx1nQxRIOM283PNxCxsF4SxEg5MNrqr0xtTIP-YQU&_nc_zt=23&_nc_ht=scontent.flis4-1.fna&_nc_gid=A4olA54Bj-c90DYVOO5RjlR&oh=00_AYCDzT6Y5qEVJbILzjBlbqOASPuTHdOfMNoVfhERVOYSNQ&oe=67C3072E" alt="Stand PrisCar" class="banner-image" loading="lazy" />
-      <div class="welcome-description">
-        <h2>Bem-vindo à PrisCar</h2>
-        <p>
-          Na PrisCar, nossa missão é oferecer aos nossos clientes a melhor experiência na compra do seu veículo. Com um extenso portfólio de carros novos e seminovos, trabalhamos para garantir que você encontre o modelo ideal para suas necessidades. Reconhecidos pela transparência, confiança e preços justos, proporcionamos um atendimento personalizado, financiamento facilitado e suporte pós-venda completo.
-        </p>
-        <div class="extended">
-          <p>
-            Além disso, investimos em tecnologia de ponta para tornar a navegação em nosso site rápida, intuitiva e agradável, tanto em computadores quanto em dispositivos móveis. Aqui você encontra informações detalhadas, imagens em alta definição e ferramentas interativas que permitem filtrar, comparar e até favoritar os veículos de seu interesse.
-          </p>
-          <p>
-            Nossa equipe de especialistas está sempre à disposição para orientá-lo e oferecer consultoria personalizada, garantindo que cada cliente encontre o carro perfeito. Trabalhamos com as melhores marcas e oferecemos condições exclusivas de financiamento, seguro e manutenção, para que sua experiência seja completa e sem complicações.
-          </p>
-          <p>
-            Convidamos você a explorar nosso catálogo, aproveitar as ofertas e, principalmente, sentir a segurança e o profissionalismo que fazem da PrisCar uma referência no mercado automotivo. Descubra o carro dos seus sonhos e viva uma experiência de compra única!
-          </p>
+  <section data-bs-version="5.1" class="menu menu2 cid-uDRB4JjjV6" once="menu" id="menu-5-uDRB4JjjV6">
+	
+
+	<nav class="navbar navbar-dropdown navbar-fixed-top navbar-expand-lg">
+		<div class="container">
+			<div class="navbar-brand">
+				<span class="navbar-logo">
+					<a href="#">
+						<img src="https://r.mobirisesite.com/1239168/assets/images/photo-1553440569-bcc63803a83d.jpeg" alt="" style="height: 4.3rem;">
+					</a>
+				</span>
+				<span class="navbar-caption-wrap"><a class="navbar-caption text-black display-4" href="#">Carros</a></span>
+			</div>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbarSupportedContent" data-bs-target="#navbarSupportedContent" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+				<div class="hamburger">
+					<span></span>
+					<span></span>
+					<span></span>
+					<span></span>
+				</div>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav nav-dropdown" data-app-modern-menu="true">
+					<li class="nav-item">
+						<a class="nav-link link text-black display-4" href="#">SUVs</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link link text-black display-4" href="#" aria-expanded="false">Sedans</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link link text-black display-4" href="#">Caminhonetes</a>
+					</li>
+				</ul>
+				
+				<div class="navbar-buttons mbr-section-btn"><a class="btn btn-primary display-4" href="#">Comprar Agora</a></div>
+			</div>
+		</div>
+	</nav>
+</section>
+
+<section data-bs-version="5.1" class="header16 cid-uDRB4Jk7Gs mbr-fullscreen mbr-parallax-background" id="hero-17-uDRB4Jk7Gs">
+  
+  
+  <div class="container-fluid">
+    <div class="row">
+      <div class="content-wrap col-12 col-md-12">
+        <h1 class="mbr-section-title mbr-fonts-style mbr-white mb-4 display-1">
+          <strong>Carros Incríveis</strong>
+        </h1>
+        
+        <p class="mbr-fonts-style mbr-text mbr-white mb-4 display-7">Os melhores veículos para quem não se contenta com o comum!</p>
+        <div class="mbr-section-btn">
+          <a class="btn btn-white-outline display-7" href="#">Ver Ofertas</a>
         </div>
       </div>
     </div>
-    
-    <!-- Aba Carros -->
-    <div id="cars" class="tab-content">
-      <h2>Carros Disponíveis</h2>
-      <div class="car-filter">
-        <select id="priceFilter" onchange="filterCars()">
-          <option value="">Filtrar por Preço</option>
-          <option value="up">Acima de 25.000€</option>
-          <option value="down">Abaixo de 25.000€</option>
-        </select>
-        <select id="typeFilter" onchange="filterCars()">
-          <option value="">Filtrar por Tipo</option>
-          <option value="sedan">Sedan</option>
-          <option value="suv">SUV</option>
-          <option value="hatch">Hatch</option>
-        </select>
-      </div>
-      <div class="car-list">
-        <div class="car" data-type="sedan" data-price="25000" onclick="openCarModal('bmw')">
-          <img src="https://images.unsplash.com/photo-1593720213065-41fcb436d8a9?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60" alt="BMW Série 3" loading="lazy" />
-          <div class="info">
-            <h3>BMW Série 3</h3>
-            <p>25.000€</p>
-          </div>
-          <button class="btn-fav" onclick="event.stopPropagation(); addToFavorites('BMW Série 3');">♥</button>
-          <button class="btn-compare" onclick="event.stopPropagation(); addToCompare('BMW Série 3');">⇄</button>
-        </div>
-        <div class="car" data-type="suv" data-price="22000" onclick="openCarModal('audi')">
-          <img src="https://images.unsplash.com/photo-1593720212946-9e00f18c98e2?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60" alt="Audi A4" loading="lazy" />
-          <div class="info">
-            <h3>Audi A4</h3>
-            <p>22.500€</p>
-          </div>
-          <button class="btn-fav" onclick="event.stopPropagation(); addToFavorites('Audi A4');">♥</button>
-          <button class="btn-compare" onclick="event.stopPropagation(); addToCompare('Audi A4');">⇄</button>
-        </div>
-      </div>
-      <div class="carousel">
-        <img src="https://images.unsplash.com/photo-1593720213065-41fcb436d8a9?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60" alt="BMW Série 3" loading="lazy" />
-        <img src="https://images.unsplash.com/photo-1593720212946-9e00f18c98e2?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60" alt="Audi A4" loading="lazy" />
-        <img src="https://images.unsplash.com/photo-1563720225575-d46d9ecf6b19?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60" alt="Mercedes-Benz" loading="lazy" />
+  </div>
+</section>
+
+<section data-bs-version="5.1" class="gallery4 cid-uDRB4JlxZt" id="gallery-12-uDRB4JlxZt">
+  
+  
+  <div class="container-fluid gallery-wrapper">
+    <div class="row justify-content-center">
+      <div class="col-12 content-head">
+        
       </div>
     </div>
-    
-    <!-- Modal de Carro -->
-    <div id="carModal" class="modal">
-      <div class="modal-content">
-        <span class="close" onclick="closeCarModal()">×</span>
-        <img id="carImage" src="" alt="Carro" />
-        <h3 id="carPrice"></h3>
-        <p id="carDescription"></p>
-        <div id="rating" aria-label="Avaliação do veículo">
-          <i class="fas fa-star"></i>
-          <i class="fas fa-star"></i>
-          <i class="fas fa-star"></i>
-          <i class="fas fa-star-half-alt"></i>
-          <i class="far fa-star"></i>
+    <div class="grid-container">
+      <div class="grid-container-1" style="transform: translate3d(-200px, 0px, 0px);">
+        <div class="grid-item">
+          <img src="https://r.mobirisesite.com/1239168/assets/images/photo-1493238792000-8113da705763.jpeg" alt="">
         </div>
-        <div id="socialShare">
-          <button onclick="shareCar('facebook')"><i class="fab fa-facebook"></i></button>
-          <button onclick="shareCar('twitter')"><i class="fab fa-twitter"></i></button>
-          <button onclick="shareCar('whatsapp')"><i class="fab fa-whatsapp"></i></button>
+        <div class="grid-item">
+          <img src="https://r.mobirisesite.com/1239168/assets/images/photo-1603386329225-868f9b1ee6c9.jpeg" alt="">
+        </div>
+        <div class="grid-item">
+          <img src="https://r.mobirisesite.com/1239168/assets/images/photo-1517672651691-24622a91b550.jpeg" alt="">
+        </div>
+        <div class="grid-item">
+          <img src="https://r.mobirisesite.com/1239168/assets/images/photo-1502877338535-766e1452684a.jpeg" alt="">
+        </div>
+      </div>
+      <div class="grid-container-2" style="transform: translate3d(-70px, 0px, 0px);">
+        <div class="grid-item">
+          <img src="https://r.mobirisesite.com/1239168/assets/images/photo-1503736334956-4c8f8e92946d.jpeg" alt="">
+        </div>
+        <div class="grid-item">
+          <img src="https://r.mobirisesite.com/1239168/assets/images/photo-1552519507-da3b142c6e3d.jpeg" alt="">
+        </div>
+        <div class="grid-item">
+          <img src="https://r.mobirisesite.com/1239168/assets/images/photo-1526726538690-5cbf956ae2fd.jpeg" alt="">
+        </div>
+        <div class="grid-item">
+          <img src="https://r.mobirisesite.com/1239168/assets/images/photo-1588258219511-64eb629cb833.jpeg" alt="">
         </div>
       </div>
     </div>
+  </div>
+</section>
+
+<section data-bs-version="5.1" class="header18 cid-uDRB4Jlvam mbr-fullscreen" data-bg-video="https://www.youtube.com/embed/BiOPO-nKj7s?autoplay=1&amp;loop=1&amp;playlist=BiOPO-nKj7s&amp;t=20&amp;mute=1&amp;playsinline=1&amp;controls=0&amp;showinfo=0&amp;autohide=1&amp;allowfullscreen=true&amp;mode=transparent" id="video-5-uDRB4Jlvam">
+  
+
+  <div class="mbr-overlay" style="opacity: 0.3; background-color: rgb(0, 0, 0);"></div>
+  <div class="container-fluid">
+    <div class="row">
+    </div>
+  </div>
+</section>
+
+<section data-bs-version="5.1" class="video04 cid-uDRB4JlZJw" id="video-6-uDRB4JlZJw">
+  
+  
+  <div class="container">
+    <div class="mbr-section-head mb-5">
+      <h4 class="mbr-section-title mbr-fonts-style mb-0 mt-0 display-2">
+        <strong>Modelos de Carros Novos</strong>
+      </h4>
+      
+    </div>
+    <div class="row justify-content-center">
+      <div class="col-12 col-md-10 video-block">
+        <div class="video-wrapper"><iframe class="mbr-embedded-video" src="https://www.youtube.com/embed/CiQJSR4mYJ4?rel=0&amp;amp;mute=1&amp;showinfo=0&amp;autoplay=1&amp;loop=1&amp;playlist=CiQJSR4mYJ4" width="1280" height="720" frameborder="0" allowfullscreen></iframe></div>
+        
+      </div>
+    </div>
+  </div>
+</section>
+
+<section data-bs-version="5.1" class="features017 mbr-embla cid-uDRB4Jm6CW" id="features-17-uDRB4Jm6CW">
     
-    <!-- Aba Sobre -->
-    <div id="about" class="tab-content">
-      <h2>Sobre a PrisCar</h2>
-      <p>
-        Somos um stand de automóveis com vasta experiência no mercado. Trabalhamos com carros novos e usados, garantindo a qualidade e a satisfação dos nossos clientes.
-      </p>
-      <div class="services">
-        <h2>Nossos Serviços</h2>
-        <div class="service-list">
-          <div class="service">
-            <h3>Consultoria Especializada</h3>
-            <p>Assessoria completa para a escolha do veículo ideal.</p>
+    
+    <div class="position-relative">
+        <div class="container-fluid">
+            <div class="row justify-content-center">
+                <div class="col-12 content-head">
+                    <div class="mbr-section-head mb-5">
+                        <h4 class="mbr-section-title mbr-fonts-style align-center mb-0 display-2">
+                            <strong>Tipos de Carros</strong>
+                        </h4>
+                        <h5 class="mbr-section-subtitle mbr-fonts-style align-center mb-0 mt-4 display-7">Escolha o carro que combina com você!</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="embla" data-skip-snaps="true" data-align="center" data-contain-scroll="trimSnaps" data-auto-play-interval="5" data-draggable="true">
+            <div class="embla__viewport container-fluid">
+                <div class="embla__container">
+                    <div class="embla__slide slider-image item active" style="margin-left: 1rem; margin-right: 1rem;">
+                        <div class="slide-content">
+                            <div class="item-img">
+                                <div class="item-wrapper">
+                                    <img src="https://r.mobirisesite.com/1239168/assets/images/photo-1593544340816-93d84a106415.jpeg" alt="" title="" data-slide-to="1" data-bs-slide-to="1">
+                                </div>
+                            </div>
+                            <div class="item-content">
+                                <h5 class="item-title mbr-fonts-style display-5">
+                                    <strong>SUVs Espetaculares</strong>
+                                </h5>
+                                
+                                <p class="mbr-text mbr-fonts-style mt-3 display-7">Aventure-se com estilo e conforto.</p>
+                            </div>
+
+                            <div class="mbr-section-btn item-footer mt-2">
+                                <a href="" class="btn item-btn btn-primary display-7" target="_blank">Ver SUVs</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="embla__slide slider-image item" style="margin-left: 1rem; margin-right: 1rem;">
+                        <div class="slide-content">
+                            <div class="item-img">
+                                <div class="item-wrapper">
+                                    <img src="https://r.mobirisesite.com/1239168/assets/images/photo-1618843479313-40f8afb4b4d8.jpeg" alt="" title="" data-slide-to="2" data-bs-slide-to="2">
+                                </div>
+                            </div>
+                            <div class="item-content">
+                                <h5 class="item-title mbr-fonts-style display-5">
+                                    <strong>Sedans Elegantes</strong>
+                                </h5>
+                                
+                                <p class="mbr-text mbr-fonts-style mt-3 display-7">Perfeitos para quem ama sofisticação.</p>
+                            </div>
+                            <div class="mbr-section-btn item-footer mt-2">
+                                <a href="" class="btn item-btn btn-primary display-7" target="_blank">Ver SUVs</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="embla__slide slider-image item" style="margin-left: 1rem; margin-right: 1rem;">
+                        <div class="slide-content">
+                            <div class="item-img">
+                                <div class="item-wrapper">
+                                    <img src="https://r.mobirisesite.com/1239168/assets/images/photo-1494905998402-395d579af36f.jpeg" alt="" title="" data-slide-to="3" data-bs-slide-to="3">
+                                </div>
+                            </div>
+                            <div class="item-content">
+                                <h5 class="item-title mbr-fonts-style display-5">
+                                    <strong>Caminhonetes Poderosas</strong>
+                                </h5>
+                                
+                                <p class="mbr-text mbr-fonts-style mt-3 display-7">Força e resistência para qualquer desafio.</p>
+                            </div>
+                            <div class="mbr-section-btn item-footer mt-2">
+                                <a href="" class="btn item-btn btn-primary display-7" target="_blank">Ver SUVs</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="embla__slide slider-image item" style="margin-left: 1rem; margin-right: 1rem;">
+                        <div class="slide-content">
+                            <div class="item-img">
+                                <div class="item-wrapper">
+                                    <img src="https://r.mobirisesite.com/1239168/assets/images/photo-1565043666747-69f6646db940.jpeg" alt="" title="" data-slide-to="4" data-bs-slide-to="4">
+                                </div>
+                            </div>
+                            <div class="item-content">
+                                <h5 class="item-title mbr-fonts-style display-5">
+                                    <strong>Elétricos Modernos</strong>
+                                </h5>
+                                
+                                <p class="mbr-text mbr-fonts-style mt-3 display-7">Sustentabilidade com tecnologia de ponta.</p>
+                            </div>
+                            <div class="mbr-section-btn item-footer mt-2">
+                                <a href="" class="btn item-btn btn-primary display-7" target="_blank">Ver SUVs</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="embla__slide slider-image item" style="margin-left: 1rem; margin-right: 1rem;">
+                        <div class="slide-content">
+                            <div class="item-img">
+                                <div class="item-wrapper">
+                                    <img src="https://r.mobirisesite.com/1239168/assets/images/photo-1532581140115-3e355d1ed1de.jpeg" alt="" title="" data-slide-to="5" data-bs-slide-to="5">
+                                </div>
+                            </div>
+                            <div class="item-content">
+                                <h5 class="item-title mbr-fonts-style display-5">
+                                    <strong>Hatchbacks Práticos</strong>
+                                </h5>
+                                
+                                <p class="mbr-text mbr-fonts-style mt-3 display-7">Compactos e ágeis para a cidade.</p>
+                            </div>
+                            <div class="mbr-section-btn item-footer mt-2">
+                                <a href="" class="btn item-btn btn-primary display-7" target="_blank">Ver SUVs</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="embla__button embla__button--prev">
+                <span class="mobi-mbri mobi-mbri-arrow-prev mbr-iconfont" aria-hidden="true"></span>
+                <span class="sr-only visually-hidden visually-hidden">Previous</span>
+            </button>
+            <button class="embla__button embla__button--next">
+                <span class="mobi-mbri mobi-mbri-arrow-next mbr-iconfont" aria-hidden="true"></span>
+                <span class="sr-only visually-hidden visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+</section>
+
+<section data-bs-version="5.1" class="features03 cid-uDRB4JnOY4" id="news-1-uDRB4JnOY4">
+  
+  
+  <div class="container-fluid">
+    <div class="row justify-content-center mb-5">
+      <div class="col-12 content-head">
+        <div class="mbr-section-head">
+          <h4 class="mbr-section-title mbr-fonts-style align-center mb-0 display-2">
+            <strong>Novidades em Carros</strong>
+          </h4>
+          
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="item features-image col-12 col-md-6 col-lg-3 active">
+        <div class="item-wrapper">
+          <div class="item-img mb-3">
+            <img src="https://r.mobirisesite.com/1239168/assets/images/photo-1626668893632-6f3a4466d22f.jpeg" alt="" title="">
           </div>
-          <div class="service">
-            <h3>Financiamento Facilitado</h3>
-            <p>Condições especiais e aprovação rápida.</p>
-          </div>
-          <div class="service">
-            <h3>Suporte Pós-Venda</h3>
-            <p>Manutenção, seguro e serviços para garantir sua tranquilidade.</p>
+          <div class="item-content align-left">
+            <h5 class="item-title mbr-fonts-style mt-0 mb-2 display-5">
+              <strong>Lançamento do Novo Modelo</strong>
+            </h5>
+            <p class="mbr-text mbr-fonts-style mb-3 display-7">2025-02-26</p>
+            <p class="mbr-text mbr-fonts-style mb-3 display-7">O novo modelo chegou para arrasar! Venha conferir as novidades e se surpreender com a tecnologia.</p>
+            <div class="mbr-section-btn item-footer">
+              <a href="" class="btn item-btn btn-primary display-7">Saiba</a>
+            </div>
           </div>
         </div>
       </div>
-      <div class="testimonials">
-        <h3>O que dizem nossos clientes</h3>
-        <p>"Comprei meu carro na PrisCar e o atendimento foi excepcional. Recomendo a todos!"</p>
-      </div>
-      <div class="map-container">
-        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2789.199093416601!2d-8.534276435056066!3d41.31979842929053!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd1ae93f76e32f77%3A0x66c0f7f40f4c779!2sAv.%20da%20Corredoura%20908%2C%204580%20Vilela!5e0!3m2!1spt-PT!2spt!4v1676331066232!5m2!1spt-PT!2spt" allowfullscreen loading="lazy"></iframe>
-      </div>
-      <div class="newsletter">
-        <h3>Assine nossa Newsletter</h3>
-        <input type="email" placeholder="Digite seu email" aria-label="Email para newsletter" />
-        <button onclick="subscribeNewsletter()">Inscrever-se</button>
-      </div>
-      <div class="faq">
-        <h3>Perguntas Frequentes</h3>
-        <div class="accordion">
-          <button class="accordion-toggle">Como funciona o financiamento?</button>
-          <div class="accordion-content">
-            <p>Nós oferecemos opções de financiamento com aprovação rápida e taxas competitivas. Basta entrar em contato conosco para mais detalhes.</p>
+      <div class="item features-image col-12 col-md-6 col-lg-3">
+        <div class="item-wrapper">
+          <div class="item-img mb-3">
+            <img src="https://r.mobirisesite.com/1239168/assets/images/photo-1591293836027-e05b48473b67.jpeg" alt="" title="" data-slide-to="1" data-bs-slide-to="1">
           </div>
-          <button class="accordion-toggle">Posso trocar meu carro usado?</button>
-          <div class="accordion-content">
-            <p>Sim, aceitamos trocas! Nossa equipe fará uma avaliação do seu veículo para oferecer a melhor proposta.</p>
+          <div class="item-content align-left">
+            <h5 class="item-title mbr-fonts-style mb-2 mt-0 display-5">
+              <strong>Promoção Imperdível Esta Semana</strong>
+            </h5>
+            <p class="mbr-text mbr-fonts-style mb-3 display-7">2025-02-26</p>
+            <p class="mbr-text mbr-fonts-style mb-3 display-7">Descontos de até 30%! Não perca a chance de levar seu carro dos sonhos.</p>
+            <div class="mbr-section-btn item-footer">
+              <a href="" class="btn item-btn btn-primary display-7">Saiba</a>
+            </div>
           </div>
-          <button class="accordion-toggle">Quais marcas vocês trabalham?</button>
-          <div class="accordion-content">
-            <p>Trabalhamos com diversas marcas de renome mundial, tanto em carros novos quanto seminovos.</p>
+        </div>
+      </div>
+      <div class="item features-image col-12 col-md-6 col-lg-3">
+        <div class="item-wrapper">
+          <div class="item-img mb-3">
+            <img src="https://r.mobirisesite.com/1239168/assets/images/photo-1611016186353-9af58c69a533.jpeg" alt="" title="" data-slide-to="2" data-bs-slide-to="2">
+          </div>
+          <div class="item-content align-left">
+            <h5 class="item-title mbr-fonts-style mb-2 mt-0 display-5">
+              <strong>Test Drive Grátis</strong>
+            </h5>
+            <p class="mbr-text mbr-fonts-style mb-3 display-7">2025-02-26</p>
+            <p class="mbr-text mbr-fonts-style mb-3 display-7">Sinta a emoção ao dirigir! Agende seu test drive e descubra a adrenalina.</p>
+            <div class="mbr-section-btn item-footer">
+              <a href="" class="btn item-btn btn-primary display-7">Saiba</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="item features-image col-12 col-md-6 col-lg-3">
+        <div class="item-wrapper">
+          <div class="item-img mb-3">
+            <img src="https://r.mobirisesite.com/1239168/assets/images/photo-1530685932526-48ec92998eaa.jpeg" alt="" title="" data-slide-to="2" data-bs-slide-to="2">
+          </div>
+          <div class="item-content align-left">
+            <h5 class="item-title mbr-fonts-style mb-2 mt-0 display-5">
+              <strong>Carros Usados em Ótimo Estado</strong>
+            </h5>
+            <p class="mbr-text mbr-fonts-style mb-3 display-7">2025-02-26</p>
+            <p class="mbr-text mbr-fonts-style mb-3 display-7">Temos uma seleção incrível de usados. Qualidade garantida e preços que cabem no bolso!</p>
+            <div class="mbr-section-btn item-footer">
+              <a href="" class="btn item-btn btn-primary display-7">Saiba</a>
+            </div>
           </div>
         </div>
       </div>
     </div>
+  </div>
+</section>
+
+<section data-bs-version="5.1" class="image02 cid-uDRB4Jnzy4 mbr-fullscreen mbr-parallax-background" id="image-13-uDRB4Jnzy4">
     
-    <!-- Aba Contato -->
-    <div id="contact" class="tab-content">
-      <h2>Entre em Contato Conosco</h2>
-      <form class="contact-form" action="mailto:standpriscar@gmail.com" method="post" enctype="text/plain" onsubmit="return validateRecaptcha()">
-        <input type="text" name="name" placeholder="Nome" required />
-        <input type="email" name="email" placeholder="Email" required />
-        <textarea name="message" placeholder="Sua Mensagem" rows="5" required></textarea>
-        <!-- reCAPTCHA v2 -->\n        <div class="g-recaptcha" data-sitekey="YOUR_RECAPTCHA_SITE_KEY"></div>\n        <button type="submit">Enviar</button>\n      </form>\n      <div id="chatWidget">\n        <button onclick="openChat()">Chat Ao Vivo</button>\n      </div>\n    </div>\n  </main>\n  \n  <!-- Rodapé -->\n  <footer>\n    <p>&copy; 2025 PrisCar - Stand de Automóveis | Todos os direitos reservados.</p>\n    <p><a href=\"mailto:standpriscar@gmail.com\">Contato por Email</a></p>\n  </footer>\n  \n  <!-- Firebase Authentication (Placeholder) -->\n  <script src=\"https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js\"></script>\n  <script src=\"https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js\"></script>\n  <script>\n    // Substitua pelos dados reais do seu projeto Firebase\n    var firebaseConfig = {\n      apiKey: \"YOUR_API_KEY\",\n      authDomain: \"YOUR_PROJECT_ID.firebaseapp.com\",\n      projectId: \"YOUR_PROJECT_ID\",\n      storageBucket: \"YOUR_PROJECT_ID.appspot.com\",\n      messagingSenderId: \"YOUR_SENDER_ID\",\n      appId: \"YOUR_APP_ID\"\n    };\n    firebase.initializeApp(firebaseConfig);\n\n    function login() {\n      var email = document.getElementById('loginEmail').value;\n      var password = document.getElementById('loginPassword').value;\n      firebase.auth().signInWithEmailAndPassword(email, password)\n        .then(function(userCredential) {\n          closeLoginModal();\n          alert('Login bem-sucedido!');\n        })\n        .catch(function(error) {\n          alert(error.message);\n        });\n    }\n  </script>\n  \n  <!-- Tawk.to Chat Widget (Placeholder) -->\n  <script type=\"text/javascript\">\n    var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();\n    (function() {\n      var s1 = document.createElement(\"script\"), s0 = document.getElementsByTagName(\"script\")[0];\n      s1.async = true;\n      s1.src = 'https://embed.tawk.to/YOUR_TAWK_TO_ID/default';\n      s1.charset = 'UTF-8';\n      s1.setAttribute('crossorigin', '*');\n      s0.parentNode.insertBefore(s1, s0);\n    })();\n  </script>\n  \n  <!-- Funções Gerais -->\n  <script>\n    function openTab(tabName) {\n      document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));\n      const target = document.getElementById(tabName);\n      if (target) { target.classList.add('active'); }\n    }\n    \n    function openCarModal(carId) {\n      const modal = document.getElementById('carModal');\n      modal.style.display = \"flex\";\n      const carInfo = {\n        bmw: {\n          image: 'https://images.unsplash.com/photo-1593720213065-41fcb436d8a9?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60',\n          price: '25.000€',\n          description: 'BMW Série 3 com motor 2.0 Turbo, ano de 2020, com 30.000 km rodados.'\n        },\n        audi: {\n          image: 'https://images.unsplash.com/photo-1593720212946-9e00f18c98e2?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60',\n          price: '22.500€',\n          description: 'Audi A4, motor 1.8 TFSI, ano de 2019, 50.000 km, excelente estado.'\n        }\n      };\n      document.getElementById('carImage').src = carInfo[carId].image;\n      document.getElementById('carPrice').textContent = carInfo[carId].price;\n      document.getElementById('carDescription').textContent = carInfo[carId].description;\n    }\n    function closeCarModal() { document.getElementById('carModal').style.display = \"none\"; }\n    \n    function filterCars() {\n      const priceFilter = document.getElementById('priceFilter').value;\n      const typeFilter = document.getElementById('typeFilter').value;\n      document.querySelectorAll('.car').forEach(car => {\n        const carPrice = parseInt(car.getAttribute('data-price'));\n        const carType = car.getAttribute('data-type');\n        let show = true;\n        if (priceFilter === 'up' && carPrice <= 25000) show = false;\n        if (priceFilter === 'down' && carPrice >= 25000) show = false;\n        if (typeFilter && carType !== typeFilter) show = false;\n        car.style.display = show ? 'block' : 'none';\n      });\n    }\n    \n    window.addEventListener(\"scroll\", function() {\n      const btn = document.getElementById(\"backToTop\");\n      btn.style.display = window.pageYOffset > 300 ? \"block\" : \"none\";\n    });\n    function scrollToTop() { window.scrollTo({ top: 0, behavior: \"smooth\" }); }\n    \n    window.addEventListener(\"load\", function() {\n      if (!localStorage.getItem(\"cookiesAccepted\")) {\n        document.getElementById(\"cookieConsent\").style.display = \"block\";\n      }\n    });\n    function acceptCookies() {\n      localStorage.setItem(\"cookiesAccepted\", \"true\");\n      document.getElementById(\"cookieConsent\").style.display = \"none\";\n    }\n    \n    function shareCar(platform) { alert('Compartilhando no ' + platform + ' (em desenvolvimento)'); }\n    \n    function addToCompare(carName) { alert('Veículo ' + carName + ' adicionado ao comparador.'); }\n    function addToFavorites(carName) { alert('Veículo ' + carName + ' favoritado.'); }\n    \n    function openChat() { alert('Chat ao vivo em breve.'); }\n    \n    function subscribeNewsletter() { alert('Inscrição realizada! Em breve, você receberá nossas novidades.'); }\n    \n    function validateRecaptcha() {\n      if (grecaptcha.getResponse() === \"\") {\n        alert(\"Por favor, confirme que não é um robô.\");\n        return false;\n      }\n      return true;\n    }\n    \n    // Accordion FAQ\n    document.addEventListener(\"DOMContentLoaded\", function() {\n      const accordions = document.querySelectorAll(\".accordion-toggle\");\n      accordions.forEach(acc => {\n        acc.addEventListener(\"click\", function() {\n          this.classList.toggle(\"active\");\n          const content = this.nextElementSibling;\n          if (content.style.maxHeight) { content.style.maxHeight = null; }\n          else { content.style.maxHeight = content.scrollHeight + \"px\"; }\n        });\n      });\n    });\n    \n    // Google Analytics (Exemplo)\n    (function(i, s, o, g, r, a, m) {\n      i['GoogleAnalyticsObject'] = r;\n      i[r] = i[r] || function() {\n        (i[r].q = i[r].q || []).push(arguments);\n      }, i[r].l = 1 * new Date();\n      a = s.createElement(o), m = s.getElementsByTagName(o)[0];\n      a.async = 1;\n      a.src = g;\n      m.parentNode.insertBefore(a, m);\n    })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');\n    ga('create', 'UA-XXXXXXXXX-X', 'auto');\n    ga('send', 'pageview');\n  </script>\n  \n  <!-- Login Modal (Placeholder com Firebase) -->\n  <div id=\"loginModal\" class=\"modal\">\n    <div class=\"modal-content\">\n      <span class=\"close\" onclick=\"closeLoginModal()\">×</span>\n      <h2>Login</h2>\n      <form class=\"login-form\" onsubmit=\"event.preventDefault(); login();\">\n        <input type=\"email\" id=\"loginEmail\" placeholder=\"Email\" required />\n        <input type=\"password\" id=\"loginPassword\" placeholder=\"Senha\" required />\n        <button type=\"submit\">Entrar</button>\n      </form>\n      <p>Não tem uma conta? <a href=\"#\">Cadastre-se</a></p>\n    </div>\n  </div>\n  \n  <!-- Comparador de Veículos (Placeholder) -->\n  <div id=\"comparePanel\" class=\"modal\">\n    <div class=\"modal-content\">\n      <span class=\"close\" onclick=\"document.getElementById('comparePanel').style.display='none'\">×</span>\n      <h2>Comparar Veículos</h2>\n      <div id=\"compareList\">\n        <p>Nenhum veículo selecionado para comparação.</p>\n      </div>\n      <button onclick=\"compareCars()\">Comparar Agora</button>\n    </div>\n  </div>\n  <script>\n    function compareCars() { alert(\"Comparação em desenvolvimento.\"); }\n  </script>\n  \n  <!-- Firebase Authentication (Placeholder) -->\n  <script src=\"https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js\"></script>\n  <script src=\"https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js\"></script>\n  <script>\n    var firebaseConfig = {\n      apiKey: \"YOUR_API_KEY\",\n      authDomain: \"YOUR_PROJECT_ID.firebaseapp.com\",\n      projectId: \"YOUR_PROJECT_ID\",\n      storageBucket: \"YOUR_PROJECT_ID.appspot.com\",\n      messagingSenderId: \"YOUR_SENDER_ID\",\n      appId: \"YOUR_APP_ID\"\n    };\n    firebase.initializeApp(firebaseConfig);\n  </script>\n  \n  <!-- Tawk.to Chat Widget (Placeholder) -->\n  <script type=\"text/javascript\">\n    var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();\n    (function() {\n      var s1 = document.createElement(\"script\"), s0 = document.getElementsByTagName(\"script\")[0];\n      s1.async = true;\n      s1.src = 'https://embed.tawk.to/YOUR_TAWK_TO_ID/default';\n      s1.charset = 'UTF-8';\n      s1.setAttribute('crossorigin', '*');\n      s0.parentNode.insertBefore(s1, s0);\n    })();\n  </script>\n  \n  <!-- reCAPTCHA Validation -->\n  <script>\n    function validateRecaptcha() {\n      if (grecaptcha.getResponse() === \"\") {\n        alert(\"Por favor, confirme que não é um robô.\");\n        return false;\n      }\n      return true;\n    }\n  </script>\n</body>\n</html>
+    
+    <div class="container">
+        <div class="row"></div>
+    </div>
+</section>
+
+<section data-bs-version="5.1" class="people03 cid-uDRB4JnZAa" id="team-1-uDRB4JnZAa">
+    
+    
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-12 content-head">
+                <div class="mbr-section-head mb-5">
+                    <h4 class="mbr-section-title mbr-fonts-style align-center mb-0 display-2">
+                        <strong>Nossa Equipe</strong>
+                    </h4>
+                    
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="item features-image col-12 col-md-6 col-lg-3">
+                <div class="item-wrapper">
+                    <div class="item-img mb-3">
+                        <img src="https://r.mobirisesite.com/1239168/assets/images/photo-1535026406642-530e01750ad7.jpeg" alt="" title="">
+                    </div>
+                    <div class="item-content align-left">
+                        <h5 class="item-title mbr-fonts-style display-5">
+                            <strong>Carlos</strong>
+                        </h5>
+                        <h6 class="item-subtitle mbr-fonts-style mb-3 display-7">Gerente de Vendas</h6>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+            <div class="item features-image col-12 col-md-6 col-lg-3">
+                <div class="item-wrapper">
+                    <div class="item-img mb-3">
+                        <img src="https://r.mobirisesite.com/1239168/assets/images/photo-1676385901160-31e1b9e1c0c7.jpeg" alt="" title="">
+                    </div>
+                    <div class="item-content align-left">
+                        <h5 class="item-title mbr-fonts-style display-5">
+                            <strong>Ana</strong>
+                        </h5>
+                        <h6 class="item-subtitle mbr-fonts-style mb-3 display-7">Consultora de Carros</h6>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+            <div class="item features-image col-12 col-md-6 col-lg-3">
+                <div class="item-wrapper">
+                    <div class="item-img mb-3">
+                        <img src="https://r.mobirisesite.com/1239168/assets/images/photo-1563170423-18f482d82cc8.jpeg" alt="" title="">
+                    </div>
+                    <div class="item-content align-left">
+                        <h5 class="item-title mbr-fonts-style display-5">
+                            <strong>Ricardo</strong>
+                        </h5>
+                        <h6 class="item-subtitle mbr-fonts-style mb-3 display-7">Especialista em Financiamento</h6>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+            <div class="item features-image col-12 col-md-6 col-lg-3">
+                <div class="item-wrapper">
+                    <div class="item-img mb-3">
+                       <img src="https://r.mobirisesite.com/1239168/assets/images/photo-1681075401974-907cc62a4373.jpeg" alt="" title="" data-slide-to="3" data-bs-slide-to="3">
+                    </div>
+                    <div class="item-content align-left">
+                        <h5 class="item-title mbr-fonts-style display-5">
+                            <strong>Juliana</strong>
+                        </h5>
+                        <h6 class="item-subtitle mbr-fonts-style mb-3 display-7">Assistente de Vendas</h6>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section data-bs-version="5.1" class="list05 cid-uDRB4Jnngw" id="faq-3-uDRB4Jnngw">
+    
+    <div class="container">
+        <div class="col-12 mb-5 content-head">
+            <h3 class="mbr-section-title mbr-fonts-style align-center mb-0 display-2">
+                <strong>Perguntas Frequentes</strong>
+            </h3>
+            
+        </div>
+        <div class="row justify-content-center ">
+            <div class="col-12 col-lg-8">
+                <div class="item features-without-image col-12 active">
+                    <div class="item-wrapper">
+                        <h5 class="mbr-card-title mbr-fonts-style mt-0 mb-3 display-5">
+                            <strong>Como funciona o financiamento?</strong></h5>
+                        <p class="mbr-text mbr-fonts-style mt-0 mb-3 display-7">Oferecemos várias opções de financiamento para facilitar sua compra!</p>
+                    </div>
+                </div>
+                <div class="item features-without-image col-12">
+                    <div class="item-wrapper">
+                        <h5 class="mbr-card-title mbr-fonts-style mt-0 mb-3 display-5">
+                            <strong>Quais marcas vocês vendem?</strong></h5>
+                        <p class="mbr-text mbr-fonts-style mt-0 mb-3 display-7">Trabalhamos com as melhores marcas do mercado!</p>
+                    </div>
+                </div>
+                <div class="item features-without-image col-12">
+                    <div class="item-wrapper">
+                        <h5 class="mbr-card-title mbr-fonts-style mt-0 mb-3 display-5">
+                            <strong>Posso agendar um test drive?</strong></h5>
+                        <p class="mbr-text mbr-fonts-style mt-0 mb-3 display-7">Claro! Agende pelo nosso site ou telefone.</p>
+                    </div>
+                </div>
+                <div class="item features-without-image col-12">
+                  <div class="item-wrapper">
+                      <h5 class="mbr-card-title mbr-fonts-style mt-0 mb-3 display-5">
+                          <strong>Vocês aceitam trocas de veículos?</strong></h5>
+                      <p class="mbr-text mbr-fonts-style mt-0 mb-3 display-7">Sim, aceitamos trocas! Venha conversar.</p>
+                  </div>
+              </div>
+              <div class="item features-without-image col-12">
+                <div class="item-wrapper">
+                    <h5 class="mbr-card-title mbr-fonts-style mt-0 mb-3 display-5">
+                        <strong>Qual a garantia dos carros?</strong></h5>
+                    <p class="mbr-text mbr-fonts-style mt-0 mb-3 display-7">Todos os carros têm garantia de fábrica.</p>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section data-bs-version="5.1" class="people05 cid-uDRB4JoF31" id="testimonials-5-uDRB4JoF31">
+	
+
+	
+	
+	<div class="container">
+		<div class="row mb-5 justify-content-center">
+			<div class="col-12 mb-0 content-head">
+				<h3 class="mbr-section-title mbr-fonts-style align-center mb-0 display-2">
+					<strong>Depoimentos</strong>
+				</h3>
+				
+			</div>
+		</div>
+		<div class="row">
+			<div class="item features-without-image col-12 col-md-6 col-lg-4 active">
+				<div class="item-wrapper">
+					<div class="card-box align-left">
+						<p class="card-text mbr-fonts-style display-7">Melhor experiência de compra que já tive!</p>
+						<div class="img-wrapper mt-4 mb-3">
+							<img src="https://r.mobirisesite.com/1239168/assets/images/photo-1525614686090-7a3108e3758e.jpeg" alt="" data-slide-to="0" data-bs-slide-to="0">
+						</div>
+						<h5 class="card-title mbr-fonts-style display-7">
+							<strong>Mariana</strong>
+						</h5>
+					</div>
+				</div>
+			</div>
+			<div class="item features-without-image col-12 col-md-6 col-lg-4">
+				<div class="item-wrapper">
+					<div class="card-box align-left">
+						<p class="card-text mbr-fonts-style display-7">Os preços são imbatíveis!</p>
+						<div class="img-wrapper mt-4 mb-3">
+							<img src="https://r.mobirisesite.com/1239168/assets/images/photo-1638868939857-11ac407b347a.jpeg" data-slide-to="1" data-bs-slide-to="1" alt="">
+						</div>
+						<h5 class="card-title mbr-fonts-style display-7">
+							<strong>João</strong>
+						</h5>
+					</div>
+				</div>
+			</div>
+			<div class="item features-without-image col-12 col-md-6 col-lg-4">
+				<div class="item-wrapper">
+					<div class="card-box align-left">
+						<p class="card-text mbr-fonts-style display-7">Atendimento excepcional, recomendo a todos!</p>
+						<div class="img-wrapper mt-4 mb-3">
+							<img src="https://r.mobirisesite.com/1239168/assets/images/photo-1644945570917-1585f682efaa.jpeg" data-slide-to="2" data-bs-slide-to="2" alt="">
+						</div>
+						<h5 class="card-title mbr-fonts-style display-7">
+							<strong>Fernanda</strong>
+						</h5>
+					</div>
+				</div>
+			</div>
+			<div class="item features-without-image col-12 col-md-6 col-lg-4">
+				<div class="item-wrapper">
+					<div class="card-box align-left">
+						<p class="card-text mbr-fonts-style display-7">Comprei meu carro aqui e amei!</p>
+						<div class="img-wrapper mt-4 mb-3">
+							<img src="https://r.mobirisesite.com/1239168/assets/images/photo-1615572359976-1fe39507ed7b.jpeg" data-slide-to="4" data-bs-slide-to="4" alt="">
+						</div>
+						<h5 class="card-title mbr-fonts-style display-7">
+							<strong>Lucas</strong>
+						</h5>
+					</div>
+				</div>
+			</div>
+			<div class="item features-without-image col-12 col-md-6 col-lg-4">
+				<div class="item-wrapper">
+					<div class="card-box align-left">
+						<p class="card-text mbr-fonts-style display-7">Simplesmente o melhor lugar para comprar!</p>
+						<div class="img-wrapper mt-4 mb-3">
+							<img src="https://r.mobirisesite.com/1239168/assets/images/photo-1653953893860-b8f756596132.jpeg" data-slide-to="6" data-bs-slide-to="6" alt="">
+						</div>
+						<h5 class="card-title mbr-fonts-style display-7">
+							<strong>Patrícia</strong>
+						</h5>
+					</div>
+				</div>
+			</div>
+			<div class="item features-without-image col-12 col-md-6 col-lg-4">
+				<div class="item-wrapper">
+					<div class="card-box align-left">
+						<p class="card-text mbr-fonts-style display-7">Não trocaria essa experiência por nada!</p>
+						<div class="img-wrapper mt-4 mb-3">
+							<img src="https://r.mobirisesite.com/1239168/assets/images/photo-1599566150163-29194dcaad36.jpeg" data-slide-to="7" data-bs-slide-to="7" alt="">
+						</div>
+						<h5 class="card-title mbr-fonts-style display-7">
+							<strong>Ricardo</strong>
+						</h5>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section data-bs-version="5.1" class="article2 cid-uDRB4Jpmhq" id="about-us-2-uDRB4Jpmhq">
+	
+
+	
+	
+
+	<div class="container">
+		<div class="row justify-content-center">
+			<div class="col-12 col-md-12 col-lg-6 image-wrapper">
+				<img class="w-100" src="https://r.mobirisesite.com/1239168/assets/images/photo-1542362567-b07e54358753.jpeg" alt="">
+			</div>
+			<div class="col-12 col-md-12 col-lg">
+				<div class="text-wrapper align-left">
+					<h1 class="mbr-section-title mbr-fonts-style mb-4 display-2">
+						<strong>Sobre Nós</strong>
+					</h1>
+					<p class="mbr-text align-left mbr-fonts-style mb-3 display-7">Na AutoMundo, não vendemos apenas carros; oferecemos experiências sobre rodas que vão fazer você sentir a adrenalina correr nas veias!</p>
+
+					<p class="mbr-text align-left mbr-fonts-style mb-3 display-7">Com uma equipe apaixonada e experiente, estamos aqui para ajudar você a encontrar o carro dos seus sonhos, seja ele um esportivo veloz ou um SUV robusto.</p>
+
+					<p class="mbr-text align-left mbr-fonts-style mb-3 display-7">Nossa missão é transformar cada compra em uma celebração, porque sabemos que cada carro tem uma história e queremos que você faça parte dela!</p>
+
+					
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section data-bs-version="5.1" class="article13 cid-uDRB4JpJWM" id="call-to-action-3-uDRB4JpJWM">
+    
+    
+    
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="card col-md-12 col-lg-10">
+                <div class="card-wrapper">
+                    <div class="card-box align-left">
+                        <h4 class="card-title mbr-fonts-style display-2">
+                            <strong>Acelere Sua Compra Agora!</strong>
+                        </h4>
+                        
+                        <div class="mbr-section-btn mt-4">
+                        <a class="btn btn-primary display-4" href="#">Ver Ofertas Imperdíveis</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section data-bs-version="5.1" class="clients04 cid-uDRB4Jpszc" id="partners-1-uDRB4Jpszc">
+    
+    
+    <div class="container-fluid">
+        <div class="row justify-content-center mb-5">
+            <div class="col-12 content-head">
+                <div class="mbr-section-head">
+                    <h4 class="mbr-section-title mbr-fonts-style align-center mb-0 display-2">
+                        <strong>Nossos Parceiros</strong>
+                    </h4>
+                    
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="item features-image col-12 col-md-6 col-sm-6 col-lg-2 active">
+                <div class="item-wrapper">
+                    <div class="">
+                        <img src="https://r.mobirisesite.com/1239168/assets/images/photo-1529612700005-e35377bf1415.jpeg" alt="" title="" data-slide-to="1" data-bs-slide-to="1">
+                    </div>
+                    
+                </div>
+            </div>
+            <div class="item features-image col-12 col-md-6 col-sm-6 col-lg-2">
+                <div class="item-wrapper">
+                    <div class="">
+                        <img src="https://r.mobirisesite.com/1239168/assets/images/photo-1579041925709-798d7d0fed1d.jpeg" alt="" title="" data-slide-to="2" data-bs-slide-to="2">
+                    </div>
+                    
+                </div>
+            </div>
+            <div class="item features-image col-12 col-md-6 col-sm-6 col-lg-2">
+                <div class="item-wrapper">
+                    <div class="">
+                        <img src="https://r.mobirisesite.com/1239168/assets/images/photo-1681415851723-dca11d0ec9a6.jpeg" alt="" title="" data-slide-to="3" data-bs-slide-to="3">
+                    </div>
+                    
+                </div>
+            </div>
+            <div class="item features-image col-12 col-md-6 col-sm-6 col-lg-2">
+                <div class="item-wrapper">
+                    <div class="">
+                        <img src="https://r.mobirisesite.com/1239168/assets/images/photo-1596622723231-b20320c7346b.jpeg" alt="" title="" data-slide-to="4" data-bs-slide-to="4">
+                    </div>
+                    
+                </div>
+            </div>
+            <div class="item features-image col-12 col-md-6 col-sm-6 col-lg-2">
+                <div class="item-wrapper">
+                    <div class="">
+                        <img src="https://r.mobirisesite.com/1239168/assets/images/photo-1651044450619-5ce74d316987.jpeg" alt="" title="" data-slide-to="5" data-bs-slide-to="5">
+                    </div>
+                    
+                </div>
+            </div>
+            <div class="item features-image col-12 col-md-6 col-sm-6 col-lg-2">
+                <div class="item-wrapper">
+                    <div class="">
+                        <img src="https://r.mobirisesite.com/1239168/assets/images/photo-1646825461394-ebd1800141d1.jpeg" alt="" title="" data-slide-to="6" data-bs-slide-to="6">
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section data-bs-version="5.1" class="gallery10 cid-uDRB4JqiMZ" id="features-69-uDRB4JqiMZ">
+  
+
+
+  <div class="container-fluid">
+
+      <div class="loop-container">
+        <div class="item display-1" data-linewords="Variedade de Carros Incríveis * Financiamento Sem Complicações * " data-direction="-1" data-speed="0.05">☁️ Best offers ☁️ Free delivery ☁️ Perfect design ☁️ Comfort ☁️ Support 24/7 ☁️ Vibes</div>
+
+        <div class="item display-1" data-linewords="Variedade de Carros Incríveis * Financiamento Sem Complicações * " data-direction="-1" data-speed="0.05">☁️ Best offers ☁️ Free delivery ☁️ Perfect design ☁️ Comfort ☁️ Support 24/7 ☁️ Vibes</div>
+      </div>
+    
+  </div>
+</section>
+
+<section data-bs-version="5.1" class="pricing1 cid-uDRB4JqXec" id="pricing-cards-1-uDRB4JqXec">
+    
+    
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-12 content-head">
+                <div class="mbr-section-head mb-5">
+                    <h4 class="mbr-section-title mbr-fonts-style align-center mb-0 display-2">
+                        <strong>Planos de Preço</strong>
+                    </h4>
+                    
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="item features-without-image col-12 col-md-6 col-lg-3 item-mb active">
+                <div class="item-wrapper">
+                    <div class="item-head">
+                        <h5 class="item-title mbr-fonts-style mb-0 display-5">
+                            <strong>Básico</strong>
+                        </h5>
+                        <h6 class="item-subtitle mbr-fonts-style mt-0 mb-0 display-7">
+                            <strong>R$4.99</strong>/mês
+                        </h6>
+                    </div>
+                    <div class="item-content">
+                        <p class="mbr-text mbr-fonts-style display-7">Ideal para quem quer um carro econômico e prático.</p>
+                    </div>
+                    <div class="mbr-section-btn item-footer">
+                        <a href="" class="btn item-btn btn-primary display-7">Escolher Básico</a>
+                    </div>
+                </div>
+            </div>
+            <div class="item features-without-image col-12 col-md-6 col-lg-3 item-mb">
+                <div class="item-wrapper">
+                    <div class="item-head">
+                        <h5 class="item-title mbr-fonts-style mb-0 display-5">
+                            <strong>Intermediário</strong>
+                        </h5>
+                        <h6 class="item-subtitle mbr-fonts-style mt-0 mb-0 display-7">
+                            <strong>R$9.99</strong>/mês
+                        </h6>
+                    </div>
+                    <div class="item-content">
+                        <p class="mbr-text mbr-fonts-style display-7">Perfeito para quem busca conforto e estilo.</p>
+                    </div>
+                    <div class="mbr-section-btn item-footer">
+                        <a href="" class="btn item-btn btn-primary display-7">Escolher Básico</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="item features-without-image col-12 col-md-6 col-lg-3 item-mb">
+                <div class="item-wrapper">
+                    <div class="item-head">
+                        <h5 class="item-title mbr-fonts-style mb-0 display-5">
+                            <strong>Avançado</strong>
+                        </h5>
+                        <h6 class="item-subtitle mbr-fonts-style mt-0 mb-0 display-7">
+                            <strong>R$14.99</strong>/mês
+                        </h6>
+                    </div>
+                    <div class="item-content">
+                        <p class="mbr-text mbr-fonts-style display-7">Para os amantes de velocidade e performance.</p>
+                    </div>
+                    <div class="mbr-section-btn item-footer">
+                        <a href="" class="btn item-btn btn-primary display-7">Escolher Básico</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="item features-without-image col-12 col-md-6 col-lg-3 item-mb">
+                <div class="item-wrapper">
+                    <div class="item-head">
+                        <h5 class="item-title mbr-fonts-style mb-0 display-5">
+                            <strong>Premium</strong>
+                        </h5>
+                        <h6 class="item-subtitle mbr-fonts-style mt-0 mb-0 display-7">
+                            <strong>R$19.99</strong>/mês
+                        </h6>
+                    </div>
+                    <div class="item-content">
+                        <p class="mbr-text mbr-fonts-style display-7">O melhor dos melhores, para quem não aceita menos.</p>
+                    </div>
+                    <div class="mbr-section-btn item-footer">
+                        <a href="" class="btn item-btn btn-primary display-7">Escolher Básico</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section data-bs-version="5.1" class="features10 cid-uDRB4Jq8F4" id="metrics-2-uDRB4Jq8F4">
+  
+
+  
+  
+  <div class="container">
+    
+    <div class="row justify-content-center">
+      <div class="item features-without-image col-12 col-md-6 col-lg-4">
+        <div class="item-wrapper">
+          <div class="card-box align-left">
+            
+            <p class="card-title mbr-fonts-style mb-3 display-1">
+              <strong>500+</strong>
+            </p>
+            <p class="card-text mbr-fonts-style mb-3 display-7">Carros Disponíveis</p>
+            
+          </div>
+        </div>
+      </div>
+      <div class="item features-without-image col-12 col-md-6 col-lg-4">
+        <div class="item-wrapper">
+          <div class="card-box align-left">
+            
+            <p class="card-title mbr-fonts-style mb-3 display-1">
+              <strong>99%</strong>
+            </p>
+            <p class="card-text mbr-fonts-style mb-3 display-7">Satisfação Garantida</p>
+            
+          </div>
+        </div>
+      </div>
+      <div class="item features-without-image col-12 col-md-6 col-lg-4">
+        <div class="item-wrapper">
+          <div class="card-box align-left">
+            
+            <p class="card-title mbr-fonts-style mb-3 display-1">
+              <strong>10 Anos</strong>
+            </p>
+            <p class="card-text mbr-fonts-style mb-3 display-7">Experiência no Mercado</p>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section data-bs-version="5.1" class="social4 cid-uDRB4JqYKg" id="follow-us-1-uDRB4JqYKg">
+    
+    
+    
+
+    <div class="container">
+        <div class="media-container-row">
+            <div class="col-12">
+                <h3 class="mbr-section-title align-center mb-5 mbr-fonts-style display-2">
+                    <strong>Siga-nos nas Redes Sociais</strong>
+                </h3>
+                <div class="social-list align-center">
+                    <a class="iconfont-wrapper bg-facebook m-2 " target="_blank" href="#">
+                        <span class="socicon-facebook socicon"></span>
+                    </a>
+                    <a class="iconfont-wrapper bg-twitter m-2" href="#" target="_blank">
+                        <span class="socicon-twitter socicon"></span>
+                    </a>
+                    <a class="iconfont-wrapper bg-instagram m-2" href="#" target="_blank">
+                        <span class="socicon-instagram socicon"></span>
+                    </a>
+                    
+                    
+                    
+                    
+                    
+                    <a class="iconfont-wrapper bg-tiktok m-2" href="#" target="_blank">
+                        <span class="socicon-tiktok socicon"></span>
+                    </a>
+                    
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section data-bs-version="5.1" class="form5 cid-uDRB4JrscQ" id="contact-form-3-uDRB4JrscQ">
+    
+    
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 content-head">
+                <div class="mbr-section-head mb-5">
+                    <h3 class="mbr-section-title mbr-fonts-style align-center mb-0 display-2">
+                        <strong>Entre em Contato</strong>
+                    </h3>
+                    
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-8 mx-auto mbr-form" data-form-type="formoid">
+                <form action="https://mobirise.eu/" method="POST" class="mbr-form form-with-styler" data-form-title="Form Name"><input type="hidden" name="email" data-form-email="true" value="huC0iHQh2FK60WRRxysHE+3oRoNEaUaF/pWMtT5QQdbKUr2bRj+OO5U1iZcY6tWSaeBIkwTidqiRVSt45/qmbgbP2AzNH0vIHfRn9J14t2LIrkmK2APl3v+DenRjlUKI">
+                    <div class="row">
+                        <div hidden="hidden" data-form-alert="" class="alert alert-success col-12">Thanks for filling out the form!</div>
+                        <div hidden="hidden" data-form-alert-danger="" class="alert alert-danger col-12">
+                            Oops...! some problem!
+                        </div>
+                    </div>
+                    <div class="dragArea row">
+                        <div class="col-md col-sm-12 form-group mb-3" data-for="name">
+                            <input type="text" name="name" placeholder="Nome" data-form-field="name" class="form-control" value="" id="name-contact-form-3-uDRB4JrscQ">
+                        </div>
+                        <div class="col-md col-sm-12 form-group mb-3" data-for="email">
+                            <input type="email" name="email" placeholder="Email" data-form-field="email" class="form-control" value="" id="email-contact-form-3-uDRB4JrscQ">
+                        </div>
+                        <div class="col-12 form-group mb-3 mb-3" data-for="url">
+                            <input type="url" name="url" placeholder="Telefone" data-form-field="url" class="form-control" value="" id="url-contact-form-3-uDRB4JrscQ">
+                        </div>
+                        <div class="col-12 form-group mb-3" data-for="textarea">
+                            <textarea name="textarea" placeholder="Mensagem" data-form-field="textarea" class="form-control" id="textarea-contact-form-3-uDRB4JrscQ"></textarea>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 align-center mbr-section-btn">
+                            <button type="submit" class="btn btn-primary display-7">Enviar Mensagem</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section data-bs-version="5.1" class="contacts03 cid-uDRB4JrJBN" id="contacts-11-uDRB4JrJBN">
+  
+
+  
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-4">
+        <div class="col-12 col-md-12">
+          <h5 class="mbr-section-title mbr-fonts-style mt-0 mb-4 display-2">
+            <strong>Nossos Contatos</strong>
+          </h5>
+          <p class="mbr-section-subtitle mbr-fonts-style mt-0 mb-4 display-7">
+            Telefone: (11) 1234-5678
+            <br>Email: contato@carros.com
+            <br>Endereço: Lousada Portugal
+            <br>Horário de Funcionamento: Seg a Sex: 9h - 18h
+          </p> 
+
+          
+        </div>
+      </div>
+        <div class="col-lg-8 side-features">
+        <div class="google-map"><iframe frameborder="0" style="border:0" src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d6045.3003145248895!2d-73.9884657!3d40.7477229!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c259a9ac1f1b85%3A0x7e33d1c0e7af3be4!2zMzUwIDV0aCBBdmUsIE5ldyBZb3JrLCBOWSAxMDExOCwg0KHQqNCQ!5e0!3m2!1sru!2sru!4v1689597362021!5m2!1sen!2sen" allowfullscreen=""></iframe></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section data-bs-version="5.1" class="footer4 cid-uDRB4JuvZZ" once="footers" id="footer-4-uDRB4JuvZZ">
+
+    
+
+    
+
+    <div class="container">
+        <div class="media-container-row align-center mbr-white">
+            <div class="col-12">
+                <p class="mbr-text mb-0 mbr-fonts-style display-7">© 2025 Carros Fantásticos. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+  <script src="https://r.mobirisesite.com/1239168/assets/web/assets/jquery/jquery.min.js?rnd=1740528324247"></script>
+  <script src="https://r.mobirisesite.com/1239168/assets/bootstrap/js/bootstrap.bundle.min.js?rnd=1740528324247"></script>
+  <script src="https://r.mobirisesite.com/1239168/assets/parallax/jarallax.js?rnd=1740528324247"></script>
+  <script src="https://r.mobirisesite.com/1239168/assets/smoothscroll/smooth-scroll.js?rnd=1740528324247"></script>
+  <script src="https://r.mobirisesite.com/1239168/assets/ytplayer/index.js?rnd=1740528324247"></script>
+  <script src="https://r.mobirisesite.com/1239168/assets/dropdown/js/navbar-dropdown.js?rnd=1740528324247"></script>
+  <script src="https://r.mobirisesite.com/1239168/assets/scrollgallery/scroll-gallery.js?rnd=1740528324247"></script>
+  <script src="https://r.mobirisesite.com/1239168/assets/vimeoplayer/player.js?rnd=1740528324247"></script>
+  <script src="https://r.mobirisesite.com/1239168/assets/embla/embla.min.js?rnd=1740528324247"></script>
+  <script src="https://r.mobirisesite.com/1239168/assets/embla/script.js?rnd=1740528324247"></script>
+  <script src="https://r.mobirisesite.com/1239168/assets/theme/js/script.js?rnd=1740528324247"></script>
+  <script src="https://r.mobirisesite.com/1239168/assets/formoid.min.js?rnd=1740528324247"></script>
+  
+  
+  
+
+</body>
+</html>
